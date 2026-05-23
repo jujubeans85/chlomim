@@ -1,1 +1,118 @@
- 
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CRATE STUDIO • CRATE JUICE™️</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#d97706">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        .crate-bg { background: linear-gradient(rgba(26,18,8,0.92), rgba(44,31,15,0.95)), url('https://picsum.photos/id/1015/2000/1400') center/cover no-repeat fixed; }
+        .header-graffiti { font-size: 3.8rem; font-weight: 900; text-shadow: 8px 8px 0 #1a1208, -4px -4px 0 #f59e0b, 0 0 20px #22d3ee; letter-spacing: -6px; background: linear-gradient(90deg, #f59e0b, #22d3ee); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .tape { background: #d97706; color: #1a1208; transform: rotate(-2deg); box-shadow: 3px 3px 0 #1a1208; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+    </style>
+</head>
+<body class="crate-bg bg-zinc-950 text-white min-h-screen">
+<div class="max-w-2xl mx-auto p-5">
+    <!-- HEADER -->
+    <div class="flex justify-center mb-6"><div class="bg-white/90 text-[#1a1208] px-8 py-3 rounded-3xl shadow-2xl inline-block header-graffiti">CRATE STUDIO</div></div>
+    <p class="text-center text-orange-300 text-2xl -mt-4 mb-6">created with love for my daughters xx.</p>
+    <div class="flex justify-center mb-8"><div class="tape inline-block px-8 py-1 text-sm font-bold tracking-widest">NAVIGATION ISAK</div></div>
+
+    <!-- TABS -->
+    <div class="flex border-b border-amber-900 mb-8 overflow-x-auto bg-white/10 backdrop-blur rounded-3xl p-1">
+        <button onclick="switchTab(0)" class="tab-btn flex-1 py-4 text-center border-b-4 border-orange-400 text-orange-400 font-semibold">Downloader</button>
+        <button onclick="switchTab(1)" class="tab-btn flex-1 py-4 text-center text-amber-200">History</button>
+        <button onclick="switchTab(2)" class="tab-btn flex-1 py-4 text-center text-amber-200">Advanced</button>
+        <button onclick="switchTab(3)" class="tab-btn flex-1 py-4 text-center text-amber-200">Templates</button>
+        <button onclick="switchTab(4)" class="tab-btn flex-1 py-4 text-center text-amber-200">Setup</button>
+    </div>
+
+    <!-- DOWNLOADER (full yt-dlp) -->
+    <div id="tab-0" class="tab-content active">
+        <div class="bg-amber-900/30 border-2 border-amber-700 rounded-3xl p-6 mb-6">
+            <textarea id="urlInput" rows="5" placeholder="Paste URL(s) here — one per line" class="w-full bg-transparent text-white placeholder:text-amber-300 focus:outline-none resize-none text-base"></textarea>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+            <button onclick="quickCommand('mp3')" class="bg-amber-600 py-6 rounded-3xl font-medium text-lg">MP3</button>
+            <button onclick="quickCommand('wav')" class="bg-amber-600 py-6 rounded-3xl font-medium text-lg">WAV</button>
+            <button onclick="quickCommand('vid')" class="bg-amber-600 py-6 rounded-3xl font-medium text-lg">VID + AUD</button>
+            <button onclick="quickCommand('vidonly')" class="bg-amber-600 py-6 rounded-3xl font-medium text-lg">VID ONLY</button>
+        </div>
+        <button onclick="dropInTheCrate()" class="mt-8 w-full py-6 bg-gradient-to-r from-amber-400 to-orange-500 text-amber-950 rounded-3xl font-bold text-2xl shadow-2xl flex items-center justify-center gap-3">🪕 DROP TO CRATE</button>
+        <div id="commandBox" class="hidden mt-8 bg-black/70 border border-amber-700 rounded-3xl p-6">
+            <pre id="commandText" class="text-emerald-300 text-sm whitespace-pre-wrap"></pre>
+            <p id="downloadNote" class="text-xs text-amber-300 text-center mt-4"></p>
+        </div>
+    </div>
+
+    <!-- ADVANCED (plugins + Shazam) -->
+    <div id="tab-2" class="tab-content">
+        <div class="bg-amber-900/30 border border-amber-700 rounded-3xl p-6">
+            <h3 class="text-amber-300 text-xl mb-4">Manipulation + Plugins</h3>
+            <div class="grid grid-cols-2 gap-4">
+                <button onclick="addFfmpegPreset('master')" class="py-4 bg-amber-600 rounded-3xl">Mastering Chain</button>
+                <button onclick="addFfmpegPreset('vocal')" class="py-4 bg-amber-600 rounded-3xl">Vocal Clean</button>
+                <button onclick="generatePlugin()" class="py-4 bg-amber-600 rounded-3xl">Generate yt-dlp Plugin</button>
+                <button onclick="shazamImport()" class="py-4 bg-amber-600 rounded-3xl">Import Shazam CSV</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Other tabs (History, Templates, Setup) -->
+    <div id="tab-1" class="tab-content">History ready</div>
+    <div id="tab-3" class="tab-content">Templates ready</div>
+    <div id="tab-4" class="tab-content">Setup ready</div>
+
+    <div class="mt-16 text-center text-xs text-amber-300">
+        BUILT WITH SO MUCH LOVE FOR MIMI & CHLOBO xxx<br>
+        CRATEJUICE™️ 2026
+    </div>
+</div>
+
+<script>
+    function switchTab(n) {
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        document.getElementById('tab-' + n).classList.add('active');
+    }
+    function quickCommand(type) {
+        const input = document.getElementById('urlInput').value.trim();
+        if (!input) return alert("Paste at least one URL");
+        let cmd = 'yt-dlp ';
+        let note = '';
+        if (type === 'mp3') { cmd += '-x --audio-format mp3 --audio-quality 0 --embed-metadata --embed-thumbnail '; note = 'This will download as [title].mp3'; }
+        else if (type === 'wav') { cmd += '-x --audio-format wav --embed-metadata '; note = 'This will download as [title].wav'; }
+        else if (type === 'vid') { cmd += '--yes-playlist '; note = 'This will download playlist as numbered files'; }
+        else if (type === 'vidonly') { cmd += '-f bestvideo '; note = 'This will download video only'; }
+        cmd += `"${input}" --output "%(title)s.%(ext)s"`;
+        document.getElementById('commandText').textContent = cmd;
+        document.getElementById('downloadNote').textContent = note;
+        document.getElementById('commandBox').classList.remove('hidden');
+    }
+    function dropInTheCrate() {
+        const text = document.getElementById('commandText').textContent;
+        navigator.clipboard.writeText(text).then(() => {
+            alert("✅ Command copied!\n\nOpen A-Shell → long-press → Paste");
+        });
+    }
+    function addFfmpegPreset(type) {
+        let chain = '';
+        if (type === 'master') chain = 'acompressor=threshold=-18dB:ratio=4,loudnorm=I=-16';
+        else if (type === 'vocal') chain = 'highpass=f=80,lowpass=f=12000,volume=1.2';
+        alert("ffmpeg -af \"" + chain + "\" added. Paste into A-Shell after download.");
+    }
+    function generatePlugin() {
+        alert("yt-dlp plugin code ready. Copy the .py file from the repo and drop it into ~/.config/yt-dlp/plugins/extractor/");
+    }
+    function shazamImport() {
+        const csv = prompt("Paste Shazam CSV lines (title,artist)");
+        if (csv) alert("Generated yt-dlp search commands for: " + csv);
+    }
+    window.onload = () => { switchTab(0); };
+</script>
+</body>
+</html>

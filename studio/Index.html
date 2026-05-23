@@ -27,7 +27,7 @@
         <button onclick="switchTab(2)" class="tab-btn flex-1 py-4 text-center text-amber-200">Advanced</button>
     </div>
 
-    <!-- DOWNLOADER - Professional grade yt-dlp -->
+    <!-- DOWNLOADER -->
     <div id="tab-0" class="tab-content active">
         <div class="bg-amber-900/30 border-2 border-amber-700 rounded-3xl p-6 mb-6">
             <textarea id="urlInput" rows="5" placeholder="Paste URL(s) here — one per line" class="w-full bg-transparent text-white placeholder:text-amber-300 focus:outline-none resize-none text-base"></textarea>
@@ -45,10 +45,10 @@
         </div>
     </div>
 
-    <!-- ADVANCED - Polished Shazam + Plugins -->
+    <!-- ADVANCED -->
     <div id="tab-2" class="tab-content">
         <div class="bg-amber-900/30 border border-amber-700 rounded-3xl p-6">
-            <h3 class="text-amber-300 text-xl mb-4">Plugins &amp; Shazam Importer</h3>
+            <h3 class="text-amber-300 text-xl mb-4">Plugins & Shazam</h3>
             <div class="grid grid-cols-2 gap-4">
                 <button onclick="generatePlugin()" class="py-4 bg-amber-600 rounded-3xl">Generate yt-dlp Plugin</button>
                 <button onclick="shazamImport()" class="py-4 bg-amber-600 rounded-3xl">Import Shazam CSV → Batch Script</button>
@@ -57,7 +57,7 @@
     </div>
 
     <div class="mt-16 text-center text-xs text-amber-300">
-        BUILT WITH SO MUCH LOVE FOR MIMI &amp; CHLOBO xxx<br>
+        BUILT WITH SO MUCH LOVE FOR MIMI & CHLOBO xxx<br>
         CRATEJUICE™️ 2026
     </div>
 </div>
@@ -73,7 +73,7 @@
         if (!input) return alert("Paste at least one URL");
         let cmd = 'yt-dlp --concurrent-fragments 16 --retries infinite --embed-metadata --embed-thumbnail --embed-chapters ';
         let note = '';
-        if (type === 'mp3') { cmd += '-x --audio-format mp3 --audio-quality 0 '; note = 'Professional MP3 (highest quality)'; }
+        if (type === 'mp3') { cmd += '-x --audio-format mp3 --audio-quality 0 '; note = 'Professional MP3'; }
         else if (type === 'wav') { cmd += '-x --audio-format wav '; note = 'Lossless WAV'; }
         else if (type === 'vid') { cmd += '--yes-playlist '; note = 'Full playlist'; }
         else if (type === 'vidonly') { cmd += '-f bestvideo '; note = 'Video only'; }
@@ -84,15 +84,30 @@
     }
 
     function dropInTheCrate() {
-        let script = '#!/bin/bash\n# CRATE STUDIO PROFESSIONAL DOWNLOAD SCRIPT\n' + document.getElementById('commandText').textContent + '\n\necho "Download complete - check ~/Documents/"';
-        navigator.clipboard.writeText(script).then(() => {
-            alert("✅ Full professional shell script copied!\n\nIn A-Shell:\n1. Paste into download.sh\n2. chmod +x download.sh\n3. ./download.sh\n\nOptimized for highest quality + retries + metadata");
+        let fullScript = `#!/bin/bash
+# CRATE STUDIO PROFESSIONAL DOWNLOAD SCRIPT
+# Run this in A-Shell after pasting
+
+${document.getElementById('commandText').textContent}
+
+echo "✅ Download complete! Files saved to ~/Documents/"
+echo "Open Files app → Documents to find your MP3/WAV/video"
+`;
+        navigator.clipboard.writeText(fullScript).then(() => {
+            alert("✅ Full professional shell script copied!\n\nIn A-Shell:\n1. Paste into a new file: download.sh\n2. chmod +x download.sh\n3. ./download.sh\n\nThe file will download automatically to your Documents folder.");
         });
     }
 
     function generatePlugin() {
-        const pluginCode = `from yt_dlp.extractor.common import InfoExtractor\n\nclass CustomPluginIE(InfoExtractor):\n    _VALID_URL = r'https?://YOUR-SITE\\.com/.*'\n    IE_NAME = 'customplugin'\n    def _real_extract(self, url):\n        # Add your extraction logic here\n        return {'id': 'example', 'title': 'Test', 'url': url}`;
-        navigator.clipboard.writeText(pluginCode).then(() => alert("✅ Plugin template copied!\n\nIn A-Shell:\n1. mkdir -p ~/.config/yt-dlp/plugins/extractor\n2. Paste as customplugin.py\n3. yt-dlp --list-extractors | grep customplugin"));
+        const code = `from yt_dlp.extractor.common import InfoExtractor
+
+class CustomPluginIE(InfoExtractor):
+    _VALID_URL = r'https?://YOUR-SITE\\.com/.*'
+    IE_NAME = 'customplugin'
+    def _real_extract(self, url):
+        # Add your extraction logic here
+        return {'id': 'example', 'title': 'Test', 'url': url}`;
+        navigator.clipboard.writeText(code).then(() => alert("✅ Plugin template copied!\n\nIn A-Shell:\n1. mkdir -p ~/.config/yt-dlp/plugins/extractor\n2. Paste as customplugin.py"));
     }
 
     function shazamImport() {
@@ -104,7 +119,7 @@
             return title && artist ? `yt-dlp "ytsearch:${title} ${artist}" --concurrent-fragments 16 --retries infinite --output "%(title)s.%(ext)s"` : '';
         }).filter(Boolean);
         const script = cmds.join('\\n\\n');
-        navigator.clipboard.writeText(script).then(() => alert("✅ Shazam batch script generated and copied!\n\nPaste into A-Shell or save as shazam-batch.sh"));
+        navigator.clipboard.writeText(script).then(() => alert("✅ Shazam batch script copied!"));
     }
 
     window.onload = () => { switchTab(0); };

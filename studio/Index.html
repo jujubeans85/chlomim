@@ -19,7 +19,7 @@
 <body class="crate-bg bg-zinc-950 text-white min-h-screen">
 <div class="max-w-2xl mx-auto p-5">
     <div class="flex justify-center mb-6"><div class="bg-white/90 text-[#1a1208] px-8 py-3 rounded-3xl shadow-2xl inline-block header-graffiti">CRATE STUDIO</div></div>
-    <p class="text-center text-orange-300 text-2xl -mt-4 mb-6">kick the crate n dig the juice.</p>
+    <p class="text-center text-orange-300 text-2xl -mt-4 mb-6">created with love for my daughters xx.</p>
     <div class="flex justify-center mb-8"><div class="tape inline-block px-8 py-1 text-sm font-bold tracking-widest">NAVIGATION ISAK</div></div>
 
     <div class="flex border-b border-amber-900 mb-8 overflow-x-auto bg-white/10 backdrop-blur rounded-3xl p-1">
@@ -27,7 +27,7 @@
         <button onclick="switchTab(2)" class="tab-btn flex-1 py-4 text-center text-amber-200">Advanced</button>
     </div>
 
-    <!-- DOWNLOADER -->
+    <!-- DOWNLOADER - Professional grade yt-dlp -->
     <div id="tab-0" class="tab-content active">
         <div class="bg-amber-900/30 border-2 border-amber-700 rounded-3xl p-6 mb-6">
             <textarea id="urlInput" rows="5" placeholder="Paste URL(s) here — one per line" class="w-full bg-transparent text-white placeholder:text-amber-300 focus:outline-none resize-none text-base"></textarea>
@@ -45,19 +45,19 @@
         </div>
     </div>
 
-    <!-- ADVANCED (polished Shazam + plugins + scripts) -->
+    <!-- ADVANCED - Polished Shazam + Plugins -->
     <div id="tab-2" class="tab-content">
         <div class="bg-amber-900/30 border border-amber-700 rounded-3xl p-6">
-            <h3 class="text-amber-300 text-xl mb-4">Plugins & Shazam Importer</h3>
+            <h3 class="text-amber-300 text-xl mb-4">Plugins &amp; Shazam Importer</h3>
             <div class="grid grid-cols-2 gap-4">
                 <button onclick="generatePlugin()" class="py-4 bg-amber-600 rounded-3xl">Generate yt-dlp Plugin</button>
-                <button onclick="shazamImport()" class="py-4 bg-amber-600 rounded-3xl">Import Shazam CSV</button>
+                <button onclick="shazamImport()" class="py-4 bg-amber-600 rounded-3xl">Import Shazam CSV → Batch Script</button>
             </div>
         </div>
     </div>
 
     <div class="mt-16 text-center text-xs text-amber-300">
-        BUILT WITH SO MUCH LOVE FOR MIMI & CHLOBO xxx<br>
+        BUILT WITH SO MUCH LOVE FOR MIMI &amp; CHLOBO xxx<br>
         CRATEJUICE™️ 2026
     </div>
 </div>
@@ -67,39 +67,46 @@
         document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
         document.getElementById('tab-' + n).classList.add('active');
     }
+
     function quickCommand(type) {
         const input = document.getElementById('urlInput').value.trim();
         if (!input) return alert("Paste at least one URL");
-        let cmd = 'yt-dlp ';
+        let cmd = 'yt-dlp --concurrent-fragments 16 --retries infinite --embed-metadata --embed-thumbnail --embed-chapters ';
         let note = '';
-        if (type === 'mp3') { cmd += '-x --audio-format mp3 --audio-quality 0 --embed-metadata --embed-thumbnail --concurrent-fragments 16 --retries infinite '; note = 'Professional MP3 ready'; }
-        else if (type === 'wav') { cmd += '-x --audio-format wav --embed-metadata --concurrent-fragments 16 '; note = 'Lossless WAV ready'; }
-        else if (type === 'vid') { cmd += '--yes-playlist '; note = 'Playlist download'; }
+        if (type === 'mp3') { cmd += '-x --audio-format mp3 --audio-quality 0 '; note = 'Professional MP3 (highest quality)'; }
+        else if (type === 'wav') { cmd += '-x --audio-format wav '; note = 'Lossless WAV'; }
+        else if (type === 'vid') { cmd += '--yes-playlist '; note = 'Full playlist'; }
         else if (type === 'vidonly') { cmd += '-f bestvideo '; note = 'Video only'; }
         cmd += `"${input}" --output "%(title)s.%(ext)s"`;
         document.getElementById('commandText').textContent = cmd;
         document.getElementById('downloadNote').textContent = note;
         document.getElementById('commandBox').classList.remove('hidden');
     }
+
     function dropInTheCrate() {
-        const text = document.getElementById('commandText').textContent;
-        navigator.clipboard.writeText(text).then(() => {
-            alert("✅ Full professional command copied!\n\nOpen A-Shell → long-press → Paste → return\n(Optimized for highest quality + retries)");
+        let script = '#!/bin/bash\n# CRATE STUDIO PROFESSIONAL DOWNLOAD SCRIPT\n' + document.getElementById('commandText').textContent + '\n\necho "Download complete - check ~/Documents/"';
+        navigator.clipboard.writeText(script).then(() => {
+            alert("✅ Full professional shell script copied!\n\nIn A-Shell:\n1. Paste into download.sh\n2. chmod +x download.sh\n3. ./download.sh\n\nOptimized for highest quality + retries + metadata");
         });
     }
+
     function generatePlugin() {
-        const code = `from yt_dlp.extractor.common import InfoExtractor\nclass CustomIE(InfoExtractor):\n    _VALID_URL = r'https?://YOUR-SITE\\.com/.*'\n    def _real_extract(self, url):\n        return {'id': '123', 'title': 'Test', 'url': url}`;
-        navigator.clipboard.writeText(code).then(() => alert("Plugin template copied! Drop into ~/.config/yt-dlp/plugins/extractor/"));
+        const pluginCode = `from yt_dlp.extractor.common import InfoExtractor\n\nclass CustomPluginIE(InfoExtractor):\n    _VALID_URL = r'https?://YOUR-SITE\\.com/.*'\n    IE_NAME = 'customplugin'\n    def _real_extract(self, url):\n        # Add your extraction logic here\n        return {'id': 'example', 'title': 'Test', 'url': url}`;
+        navigator.clipboard.writeText(pluginCode).then(() => alert("✅ Plugin template copied!\n\nIn A-Shell:\n1. mkdir -p ~/.config/yt-dlp/plugins/extractor\n2. Paste as customplugin.py\n3. yt-dlp --list-extractors | grep customplugin"));
     }
+
     function shazamImport() {
         const csv = prompt("Paste Shazam CSV lines (Title,Artist):");
         if (!csv) return;
-        let cmds = csv.split('\n').slice(1).map(line => {
+        const lines = csv.split('\\n').slice(1);
+        let cmds = lines.map(line => {
             const [title, artist] = line.split(',').map(s => s.trim());
-            return title && artist ? `yt-dlp "ytsearch:${title} ${artist}" --output "%(title)s.%(ext)s" --concurrent-fragments 16` : '';
+            return title && artist ? `yt-dlp "ytsearch:${title} ${artist}" --concurrent-fragments 16 --retries infinite --output "%(title)s.%(ext)s"` : '';
         }).filter(Boolean);
-        navigator.clipboard.writeText(cmds.join('\n\n')).then(() => alert("Shazam batch script copied!"));
+        const script = cmds.join('\\n\\n');
+        navigator.clipboard.writeText(script).then(() => alert("✅ Shazam batch script generated and copied!\n\nPaste into A-Shell or save as shazam-batch.sh"));
     }
+
     window.onload = () => { switchTab(0); };
 </script>
 </body>

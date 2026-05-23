@@ -1,0 +1,8 @@
+[build]
+  publish = "grabber"   # default simple grabber
+  command = "echo 'No build needed for static HTML'"
+
+[[redirects]]
+  from = "/studio/*"
+  to = "/studio/:splat"
+  status = 200

@@ -1,10 +1,11 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>CRATE STUDIO • CRATE JUICE™️</title>
     <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#d97706">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -32,7 +33,7 @@
         <button onclick="switchTab(4)" class="tab-btn flex-1 py-4 text-center text-amber-200">Setup</button>
     </div>
 
-    <!-- DOWNLOADER (full yt-dlp) -->
+    <!-- DOWNLOADER -->
     <div id="tab-0" class="tab-content active">
         <div class="bg-amber-900/30 border-2 border-amber-700 rounded-3xl p-6 mb-6">
             <textarea id="urlInput" rows="5" placeholder="Paste URL(s) here — one per line" class="w-full bg-transparent text-white placeholder:text-amber-300 focus:outline-none resize-none text-base"></textarea>
@@ -50,10 +51,10 @@
         </div>
     </div>
 
-    <!-- ADVANCED (plugins + Shazam) -->
+    <!-- ADVANCED (polished Shazam + plugins) -->
     <div id="tab-2" class="tab-content">
         <div class="bg-amber-900/30 border border-amber-700 rounded-3xl p-6">
-            <h3 class="text-amber-300 text-xl mb-4">Manipulation + Plugins</h3>
+            <h3 class="text-amber-300 text-xl mb-4">Manipulation + Plugins + Shazam</h3>
             <div class="grid grid-cols-2 gap-4">
                 <button onclick="addFfmpegPreset('master')" class="py-4 bg-amber-600 rounded-3xl">Mastering Chain</button>
                 <button onclick="addFfmpegPreset('vocal')" class="py-4 bg-amber-600 rounded-3xl">Vocal Clean</button>
@@ -63,7 +64,7 @@
         </div>
     </div>
 
-    <!-- Other tabs (History, Templates, Setup) -->
+    <!-- Other tabs -->
     <div id="tab-1" class="tab-content">History ready</div>
     <div id="tab-3" class="tab-content">Templates ready</div>
     <div id="tab-4" class="tab-content">Setup ready</div>
@@ -103,14 +104,23 @@
         let chain = '';
         if (type === 'master') chain = 'acompressor=threshold=-18dB:ratio=4,loudnorm=I=-16';
         else if (type === 'vocal') chain = 'highpass=f=80,lowpass=f=12000,volume=1.2';
-        alert("ffmpeg -af \"" + chain + "\" added. Paste into A-Shell after download.");
+        alert("ffmpeg -af \"" + chain + "\" added to command. Paste into A-Shell after download.");
     }
     function generatePlugin() {
-        alert("yt-dlp plugin code ready. Copy the .py file from the repo and drop it into ~/.config/yt-dlp/plugins/extractor/");
+        const pluginCode = `# Example custom extractor plugin - save as myplugin.py in ~/.config/yt-dlp/plugins/extractor/\nfrom yt_dlp.extractor.common import InfoExtractor\nclass MyPluginIE(InfoExtractor):\n    _VALID_URL = r'https?://example\\.com/.*'\n    def _real_extract(self, url):\n        return {'id': '123', 'title': 'Test', 'url': 'https://example.com/video.mp4'}`;
+        navigator.clipboard.writeText(pluginCode).then(() => alert("Plugin code copied! Paste into ~/.config/yt-dlp/plugins/extractor/myplugin.py in A-Shell"));
     }
     function shazamImport() {
-        const csv = prompt("Paste Shazam CSV lines (title,artist)");
-        if (csv) alert("Generated yt-dlp search commands for: " + csv);
+        const csvText = prompt("Paste Shazam CSV content (Title,Artist lines) or full CSV:");
+        if (!csvText) return;
+        const lines = csvText.split('\n').slice(1); // skip header
+        let commands = [];
+        lines.forEach(line => {
+            const [title, artist] = line.split(',').map(s => s.trim());
+            if (title && artist) commands.push(`yt-dlp "ytsearch:${title} ${artist}" --output "%(title)s.%(ext)s"`);
+        });
+        const output = commands.join('\n\n');
+        navigator.clipboard.writeText(output).then(() => alert("Shazam commands generated and copied!\n\nPaste into A-Shell or save as batch.sh"));
     }
     window.onload = () => { switchTab(0); };
 </script>

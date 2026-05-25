@@ -3,124 +3,168 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CRATE STUDIO • CRATE JUICE™️</title>
+    <title>THE STUDIO • CRATE JUICE™</title>
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#d97706">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-        .crate-bg { background: linear-gradient(rgba(26,18,8,0.92), rgba(44,31,15,0.95)), url('https://picsum.photos/id/1015/2000/1400') center/cover no-repeat fixed; }
-        .header-graffiti { font-size: 3.8rem; font-weight: 900; text-shadow: 8px 8px 0 #1a1208, -4px -4px 0 #f59e0b, 0 0 20px #22d3ee; letter-spacing: -6px; background: linear-gradient(90deg, #f59e0b, #22d3ee); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .tape { background: #d97706; color: #1a1208; transform: rotate(-2deg); box-shadow: 3px 3px 0 #1a1208; }
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
+        @import url('https://fonts.googleapis.com/css2?family=Architects+Daughter&display=swap');
+        body {
+            font-family: 'Architects Daughter', cursive;
+            background: linear-gradient(rgba(139,69,19,0.85), rgba(160,82,45,0.9)), url('https://picsum.photos/id/1015/2000/1200') center/cover no-repeat fixed;
+            filter: sepia(0.3) contrast(1.1);
+        }
+        .gear-bg { background: linear-gradient(rgba(26,18,8,0.92), rgba(44,31,15,0.95)), url('https://picsum.photos/id/1015/2000/1400') center/cover no-repeat fixed; filter: sepia(0.4) brightness(0.9); }
+        .vintage-button {
+            background: #d1d5db;
+            color: #1f2937;
+            box-shadow: 4px 4px 0 #374151, inset 0 2px 0 #f3f4f6;
+            font-family: 'Architects Daughter', cursive;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .vintage-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 6px 6px 0 #374151;
+        }
+        .vintage-button:active {
+            transform: translateY(1px);
+            box-shadow: 2px 2px 0 #374151;
+        }
+        .txt-box {
+            background: #9ca3af;
+            border: 4px solid #4b5563;
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.3);
+        }
+        .drop-crate {
+            background: linear-gradient(90deg, #854d0e, #b45309);
+            color: #fefce8;
+            box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.4);
+        }
+        .header-text {
+            font-family: 'Architects Daughter', cursive;
+            text-shadow: 3px 3px 0 #78350f;
+        }
+        .console {
+            font-family: monospace;
+            background: #111827;
+            border: 3px solid #78350f;
+        }
     </style>
 </head>
-<body class="crate-bg bg-zinc-950 text-white min-h-screen">
-<div class="max-w-2xl mx-auto p-5">
-    <div class="flex justify-center mb-6"><div class="bg-white/90 text-[#1a1208] px-8 py-3 rounded-3xl shadow-2xl inline-block header-graffiti">CRATE STUDIO</div></div>
-    <p class="text-center text-orange-300 text-2xl -mt-4 mb-6">created with love for my daughters xx.</p>
-    <div class="flex justify-center mb-8"><div class="tape inline-block px-8 py-1 text-sm font-bold tracking-widest">NAVIGATION ISAK</div></div>
-
-    <div class="flex border-b border-amber-900 mb-8 overflow-x-auto bg-white/10 backdrop-blur rounded-3xl p-1">
-        <button onclick="switchTab(0)" class="tab-btn flex-1 py-4 text-center border-b-4 border-orange-400 text-orange-400 font-semibold">Downloader</button>
-        <button onclick="switchTab(2)" class="tab-btn flex-1 py-4 text-center text-amber-200">Advanced</button>
-    </div>
-
-    <!-- DOWNLOADER -->
-    <div id="tab-0" class="tab-content active">
-        <div class="bg-amber-900/30 border-2 border-amber-700 rounded-3xl p-6 mb-6">
-            <textarea id="urlInput" rows="5" placeholder="Paste URL(s) here — one per line" class="w-full bg-transparent text-white placeholder:text-amber-300 focus:outline-none resize-none text-base"></textarea>
+<body class="gear-bg text-amber-950 min-h-screen flex flex-col">
+    <div class="max-w-4xl mx-auto p-6 flex-1">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <div class="inline-block px-12 py-4 bg-[#d1d5db] border-4 border-[#4b5563] rounded-3xl shadow-2xl rotate-[-1deg] header-text text-7xl tracking-[-4px] text-[#1f2937]">THE STUDIO</div>
+            <p class="text-2xl mt-3 text-amber-800 italic">for CHLO & MIMI with all of my love</p>
         </div>
-        <div class="grid grid-cols-2 gap-4">
-            <button onclick="quickCommand('mp3')" class="bg-amber-600 py-6 rounded-3xl font-medium text-lg">MP3</button>
-            <button onclick="quickCommand('wav')" class="bg-amber-600 py-6 rounded-3xl font-medium text-lg">WAV</button>
-            <button onclick="quickCommand('vid')" class="bg-amber-600 py-6 rounded-3xl font-medium text-lg">VID + AUD</button>
-            <button onclick="quickCommand('vidonly')" class="bg-amber-600 py-6 rounded-3xl font-medium text-lg">VID ONLY</button>
-        </div>
-        <button onclick="dropInTheCrate()" class="mt-8 w-full py-6 bg-gradient-to-r from-amber-400 to-orange-500 text-amber-950 rounded-3xl font-bold text-2xl shadow-2xl flex items-center justify-center gap-3">🪕 DROP TO CRATE</button>
-        <div id="commandBox" class="hidden mt-8 bg-black/70 border border-amber-700 rounded-3xl p-6">
-            <pre id="commandText" class="text-emerald-300 text-sm whitespace-pre-wrap"></pre>
-            <p id="downloadNote" class="text-xs text-amber-300 text-center mt-4"></p>
-        </div>
-    </div>
 
-    <!-- ADVANCED -->
-    <div id="tab-2" class="tab-content">
-        <div class="bg-amber-900/30 border border-amber-700 rounded-3xl p-6">
-            <h3 class="text-amber-300 text-xl mb-4">Plugins & Shazam Importer</h3>
-            <div class="grid grid-cols-2 gap-4">
-                <button onclick="generatePlugin()" class="py-4 bg-amber-600 rounded-3xl">Generate yt-dlp Plugin</button>
-                <button onclick="shazamImport()" class="py-4 bg-amber-600 rounded-3xl">Import Shazam CSV → Batch Script</button>
+        <!-- Txt Box -->
+        <div class="txt-box rounded-3xl p-8 mb-8">
+            <textarea id="urlInput" rows="3" class="w-full bg-transparent text-[#1f2937] placeholder:text-amber-700 text-2xl focus:outline-none resize-none" placeholder="Txt Box - Paste URL or drag files here"></textarea>
+        </div>
+
+        <!-- Format Buttons -->
+        <div class="grid grid-cols-2 gap-4 mb-8">
+            <button onclick="selectFormat('mp3')" class="vintage-button text-3xl py-8 rounded-3xl font-bold flex items-center justify-center gap-3">MP3</button>
+            <button onclick="selectFormat('wav')" id="wavBtn" class="vintage-button text-3xl py-8 rounded-3xl font-bold flex items-center justify-center gap-3">WAV <span class="text-emerald-600 text-4xl">✓</span></button>
+            <button onclick="selectFormat('vid')" class="vintage-button text-3xl py-8 rounded-3xl font-bold">VID</button>
+            <button onclick="selectFormat('vid+aud')" class="vintage-button text-3xl py-8 rounded-3xl font-bold">VID+AUD</button>
+        </div>
+
+        <!-- DROP TO CRATE -->
+        <button onclick="dropToCrate()" class="drop-crate w-full py-8 rounded-3xl text-4xl font-black tracking-widest shadow-inner flex items-center justify-center gap-4 mb-12">
+            <span class="text-5xl">🪕</span> DROP TO CRATE
+        </button>
+
+        <!-- A-SHELL COMMAND -->
+        <div class="console rounded-3xl p-8 mb-8">
+            <div class="flex justify-between items-center mb-4">
+                <div class="uppercase tracking-widest text-xs font-bold text-amber-300">A-SHELL COMMAND</div>
+                <button onclick="copyShell()" class="px-6 py-2 bg-amber-800 text-white rounded-2xl text-sm">COPY TO CLIPBOARD</button>
             </div>
+            <pre id="shellOutput" class="text-emerald-300 text-sm overflow-auto max-h-64 whitespace-pre-wrap font-mono"># Paste URLs or use Shazam CSV below
+# Professional yt-dlp script will appear here
+yt-dlp --concurrent-fragments 16 --retries infinite --embed-metadata --embed-thumbnail --embed-chapters "YOUR-URL" -x --audio-format wav --output "~/Documents/%(title)s.%(ext)s"</pre>
+        </div>
+
+        <!-- Shazam CSV Upload -->
+        <div class="bg-[#d1d5db] border-4 border-[#4b5563] rounded-3xl p-8 mb-8">
+            <div class="flex items-center justify-between mb-4">
+                <div class="text-2xl text-[#1f2937]">Shazam CSV Upload</div>
+                <label class="cursor-pointer bg-amber-800 text-white px-8 py-4 rounded-3xl text-xl font-bold">UPLOAD CSV
+                    <input type="file" id="csvInput" accept=".csv" class="hidden" onchange="handleShazamCSV(event)">
+                </label>
+            </div>
+            <p class="text-sm text-amber-700">Upload your Shazam export → generates batch A-Shell script</p>
+        </div>
+
+        <!-- Footer -->
+        <div class="text-center mt-auto pt-12 border-t border-amber-900">
+            <div class="text-2xl text-amber-900 font-bold">CRATE JUICE™</div>
+            <div class="text-sm text-amber-800">Since ’23</div>
+            <p class="text-xs mt-2 opacity-70">Built with love for music production on iOS • A-Shell + yt-dlp</p>
         </div>
     </div>
 
-    <div class="mt-16 text-center text-xs text-amber-300">
-        BUILT WITH SO MUCH LOVE FOR MIMI & CHLOBO xxx<br>
-        CRATEJUICE™️ 2026
-    </div>
-</div>
+    <script>
+        let selectedFormat = 'wav';
+        function selectFormat(fmt) {
+            selectedFormat = fmt;
+            document.querySelectorAll('.vintage-button').forEach(b => b.classList.remove('ring-4', 'ring-emerald-400'));
+            event.target.classList.add('ring-4', 'ring-emerald-400');
+            if (fmt === 'wav') document.getElementById('wavBtn').innerHTML = `WAV <span class="text-emerald-600 text-4xl">✓</span>`;
+        }
 
-<script>
-    function switchTab(n) {
-        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-        document.getElementById('tab-' + n).classList.add('active');
-    }
+        function dropToCrate() {
+            const input = document.getElementById('urlInput').value.trim();
+            if (!input) return alert('Paste URLs in Txt Box first');
+            let cmdBase = `yt-dlp --concurrent-fragments 16 --retries infinite --embed-metadata --embed-thumbnail --embed-chapters `;
+            if (selectedFormat === 'mp3') cmdBase += '-x --audio-format mp3 --audio-quality 0 ';
+            else if (selectedFormat === 'wav') cmdBase += '-x --audio-format wav ';
+            else if (selectedFormat === 'vid') cmdBase += '--yes-playlist ';
+            else if (selectedFormat === 'vid+aud') cmdBase += '--yes-playlist ';
+            const urls = input.split('\n').filter(Boolean);
+            let fullScript = '#!/bin/bash\n# THE STUDIO - Professional Download Script for A-Shell\n\n' + urls.map(url => cmdBase + `"${url}" --output "~/Documents/%(title)s.%(ext)s"`).join('\n\n') + '\n\necho "✅ Files dropped to ~/Documents/ - Open in Files app for Logic/DJ import"';
+            document.getElementById('shellOutput').textContent = fullScript;
+            navigator.clipboard.writeText(fullScript).then(() => alert('✅ Full A-SHELL script copied! Paste in A-Shell, chmod +x, run.'));
+        }
 
-    function quickCommand(type) {
-        const input = document.getElementById('urlInput').value.trim();
-        if (!input) return alert("Paste at least one URL");
-        let cmd = 'yt-dlp --concurrent-fragments 16 --retries infinite --embed-metadata --embed-thumbnail --embed-chapters ';
-        let note = '';
-        if (type === 'mp3') { cmd += '-x --audio-format mp3 --audio-quality 0 '; note = 'Professional MP3'; }
-        else if (type === 'wav') { cmd += '-x --audio-format wav '; note = 'Lossless WAV'; }
-        else if (type === 'vid') { cmd += '--yes-playlist '; note = 'Full playlist'; }
-        else if (type === 'vidonly') { cmd += '-f bestvideo '; note = 'Video only'; }
-        cmd += `"${input}" --output "%(title)s.%(ext)s"`;
-        document.getElementById('commandText').textContent = cmd;
-        document.getElementById('downloadNote').textContent = note;
-        document.getElementById('commandBox').classList.remove('hidden');
-    }
+        function copyShell() {
+            const text = document.getElementById('shellOutput').textContent;
+            navigator.clipboard.writeText(text).then(() => alert('✅ A-SHELL command copied!'));
+        }
 
-    function dropInTheCrate() {
-        let fullScript = `#!/bin/bash
-# CRATE STUDIO PROFESSIONAL DOWNLOAD SCRIPT
-# Run this in A-Shell
+        function handleShazamCSV(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(ev) {
+                const csv = ev.target.result;
+                const lines = csv.split('\n').slice(1);
+                let scripts = lines.map(line => {
+                    const cols = line.split(',');
+                    if (cols.length < 2) return '';
+                    const title = cols[0].trim();
+                    const artist = cols[1].trim();
+                    if (!title || !artist) return '';
+                    return `yt-dlp "ytsearch:${title} ${artist}" --concurrent-fragments 16 --retries infinite -x --audio-format wav --output "~/Documents/${title} - ${artist}.%(ext)s"`;
+                }).filter(Boolean);
+                const batchScript = '#!/bin/bash\n# Shazam Batch from THE STUDIO\n\n' + scripts.join('\n\n');
+                document.getElementById('shellOutput').textContent = batchScript;
+                navigator.clipboard.writeText(batchScript).then(() => alert('✅ Shazam batch A-SHELL script generated and copied!'));
+            };
+            reader.readAsText(file);
+        }
 
-${document.getElementById('commandText').textContent}
-
-echo "✅ Download complete! Files saved to ~/Documents/"
-echo "Open Files app → Documents to import into Logic or DJ app"`;
-        navigator.clipboard.writeText(fullScript).then(() => {
-            alert("✅ Full professional shell script copied!\n\nIn A-Shell:\n1. Paste into download.sh\n2. chmod +x download.sh\n3. ./download.sh");
-        });
-    }
-
-    function generatePlugin() {
-        const code = `from yt_dlp.extractor.common import InfoExtractor
-
-class CustomPluginIE(InfoExtractor):
-    _VALID_URL = r'https?://YOUR-SITE\\.com/.*'
-    IE_NAME = 'customplugin'
-    def _real_extract(self, url):
-        return {'id': 'example', 'title': 'Test', 'url': url}`;
-        navigator.clipboard.writeText(code).then(() => alert("✅ Plugin template copied!\n\nIn A-Shell: mkdir -p ~/.config/yt-dlp/plugins/extractor && paste as customplugin.py"));
-    }
-
-    function shazamImport() {
-        const csv = prompt("Paste Shazam CSV lines (Title,Artist):");
-        if (!csv) return;
-        const lines = csv.split('\n').slice(1);
-        let cmds = lines.map(line => {
-            const [title, artist] = line.split(',').map(s => s.trim());
-            return title && artist ? `yt-dlp "ytsearch:${title} ${artist}" --concurrent-fragments 16 --retries infinite --output "%(title)s.%(ext)s"` : '';
-        }).filter(Boolean);
-        const script = cmds.join('\n\n');
-        navigator.clipboard.writeText(script).then(() => alert("✅ Shazam batch script copied!"));
-    }
-
-    window.onload = () => { switchTab(0); };
-</script>
+        // Tailwind script init
+        function initTailwind() {
+            return;
+        }
+        window.onload = () => {
+            console.log('%c🚀 THE STUDIO live - Vintage analog gear aesthetic deployed at ' + new Date().toISOString(), 'color:#d97706; font-family:monospace;');
+            initTailwind();
+        };
+    </script>
 </body>
 </html>

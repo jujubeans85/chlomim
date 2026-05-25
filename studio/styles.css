@@ -1,18 +1,19 @@
-/* CRATE PEACH - THE STUDIO Vintage Styles */
+/* THE STUDIO - Vintage Analog Styles */
 @import url('https://fonts.googleapis.com/css2?family=Architects+Daughter&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 body {
   font-family: 'Architects Daughter', cursive;
-  background-color: #2c1f14;
-  color: #fcd34d;
 }
 
 .tape-button {
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
 .tape-button.active {
   box-shadow: 0 0 0 4px #10b981;
 }
 
-/* Add more vintage styling here later */
+/* Vintage gear background will be added in Phase 2 */

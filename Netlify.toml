@@ -1,8 +1,13 @@
 [build]
-  publish = "grabber"   # default simple grabber
+  publish = "studio"   # Full Crate Studio with vintage aesthetic
   command = "echo 'No build needed for static HTML'"
 
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Cache-Control = "no-cache, must-revalidate"
+
 [[redirects]]
-  from = "/studio/*"
-  to = "/studio/:splat"
+  from = "/grabber/*"
+  to = "/grabber/:splat"
   status = 200

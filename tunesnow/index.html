@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE STUDIO - CRATE JUICE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Architects+Daughter&display=swap');
+        body { font-family: 'Architects Daughter', cursive; }
+        .tape-deck-button { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
+        .tape-deck-button.active { box-shadow: 0 0 0 4px rgb(16 185 129); }
+    </style>
+</head>
+<body class="bg-[#2c1f14] text-amber-100 min-h-screen bg-[radial-gradient(at_bottom_right,#3a2a1f_0%,#1c140f_100%)]">
+    <div class="max-w-2xl mx-auto p-6">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <div class="inline-block bg-amber-100 text-[#2c1f14] text-6xl font-bold px-8 py-3 rounded-3xl shadow-inner border-4 border-[#3a2a1f] tracking-widest">THE STUDIO</div>
+            <p class="text-amber-300 text-xl mt-3 italic">for CHLO & MIMI with all of my love</p>
+        </div>
+
+        <!-- Txt Box -->
+        <div class="bg-[#3a2a1f] border-2 border-amber-800 rounded-3xl p-6 mb-6">
+            <textarea id="url-input" class="w-full bg-transparent text-amber-100 placeholder-amber-400 text-lg outline-none resize-none h-24" placeholder="Txt Box - Paste URL(s) one per line"></textarea>
+        </div>
+
+        <!-- Format Buttons -->
+        <div class="grid grid-cols-2 gap-4 mb-8">
+            <button onclick="selectFormat(this)" class="tape-deck-button bg-amber-100 hover:bg-amber-200 text-[#2c1f14] font-bold py-6 rounded-3xl text-xl border-4 border-[#3a2a1f] active:scale-95">MP3</button>
+            <button onclick="selectFormat(this)" class="tape-deck-button bg-amber-100 hover:bg-amber-200 text-[#2c1f14] font-bold py-6 rounded-3xl text-xl border-4 border-[#3a2a1f] active:scale-95 active">WAV ✓</button>
+            <button onclick="selectFormat(this)" class="tape-deck-button bg-amber-100 hover:bg-amber-200 text-[#2c1f14] font-bold py-6 rounded-3xl text-xl border-4 border-[#3a2a1f] active:scale-95">VID ONLY</button>
+            <button onclick="selectFormat(this)" class="tape-deck-button bg-amber-100 hover:bg-amber-200 text-[#2c1f14] font-bold py-6 rounded-3xl text-xl border-4 border-[#3a2a1f] active:scale-95">VID + AUD</button>
+        </div>
+
+        <!-- DROP TO CRATE -->
+        <button onclick="dropToCrate()" class="w-full bg-gradient-to-r from-amber-600 to-[#3a2a1f] hover:from-amber-700 text-white font-bold text-3xl py-8 rounded-3xl flex items-center justify-center gap-4 border-4 border-amber-100 shadow-xl active:scale-95">
+            🎸 DROP TO CRATE
+        </button>
+
+        <!-- A-SHELL COMMAND -->
+        <div class="mt-8 bg-[#1c140f] border-2 border-amber-800 rounded-3xl p-6">
+            <div class="flex justify-between items-center mb-4">
+                <div class="text-amber-400 font-bold">A-SHELL COMMAND</div>
+                <button onclick="copyScript()" class="bg-amber-100 hover:bg-amber-200 text-[#2c1f14] px-6 py-2 rounded-2xl font-bold">COPY</button>
+            </div>
+            <pre id="shell-output" class="bg-black/50 text-green-400 p-4 rounded-2xl font-mono text-sm overflow-auto max-h-64 whitespace-pre-wrap"># Professional yt-dlp script will appear here after DROP TO CRATE</pre>
+        </div>
+
+        <!-- UPLOAD SHAZAM CSV -->
+        <div class="mt-8">
+            <button onclick="document.getElementById('csv-upload').click()" class="w-full bg-[#3a2a1f] border-2 border-amber-800 hover:border-amber-300 text-amber-100 font-bold py-6 rounded-3xl text-xl">UPLOAD SHAZAM CSV</button>
+            <input type="file" id="csv-upload" accept=".csv" class="hidden" onchange="handleCSVUpload(event)">
+        </div>
+
+        <!-- Basic PRO TOOLS Panel -->
+        <div id="pro-tools-panel" class="mt-12 p-8 bg-[#3a2a1f] border-4 border-amber-800 rounded-3xl">
+            <h2 class="text-3xl mb-6 border-b border-amber-400 pb-4">PRO TOOLS & TACTILE CONTROLS</h2>
+            <div class="space-y-8">
+                <div>
+                    <h3 class="text-xl mb-3">Launchpad Mini MK2 Mapping</h3>
+                    <p class="text-amber-300">4 tracks × 16 pads (color-coded stems). Use Novation Components for Logic sync after AI stem split.</p>
+                </div>
+                <div>
+                    <h3 class="text-xl mb-3">Logic Pro Workflow</h3>
+                    <p class="text-amber-300">AI Stem Splitter → Spectral EQ / Flex Pitch / Groove Templates</p>
+                </div>
+                <button onclick="exportShortcutJSON()" class="w-full bg-amber-100 text-[#2c1f14] font-bold py-5 rounded-3xl">EXPORT iOS SHORTCUT JSON</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedFormat = 'WAV';
+        function selectFormat(btn) {
+            document.querySelectorAll('.tape-deck-button').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            selectedFormat = btn.textContent.trim().replace(' ✓', '');
+        }
+        function dropToCrate() {
+            const urlInput = document.getElementById('url-input').value.trim();
+            if (!urlInput) { alert('Paste a URL in the Txt Box'); return; }
+            const urls = urlInput.split('\n').filter(u => u.trim());
+            let script = '#!/bin/bash\n# THE STUDIO - Professional Download Script for A-Shell\n\nyt-dlp --concurrent-fragments 16 --retries infinite --embed-metadata --embed-thumbnail --embed-chapters ';
+            if (selectedFormat === 'MP3') script += '--format bestaudio --extract-audio --audio-format mp3 ';
+            else if (selectedFormat === 'WAV') script += '--format bestaudio --extract-audio --audio-format wav ';
+            else if (selectedFormat === 'VID ONLY') script += '--format bestvideo ';
+            else script += '--format "bestvideo+bestaudio/best" ';
+            script += '--yes-playlist --output "~/Documents/%(title)s.%(ext)s" ' + urls.map(u => `"${u}"`).join(' ');
+            script += '\n\necho "✅ Files dropped to ~/Documents/ - Open in Files app for Logic/DJ import"';
+            document.getElementById('shell-output').textContent = script;
+        }
+        function copyScript() {
+            const output = document.getElementById('shell-output').textContent;
+            navigator.clipboard.writeText(output).then(() => {
+                const btn = document.querySelector('button[onclick="copyScript()"]');
+                const original = btn.textContent;
+                btn.textContent = 'COPIED!';
+                setTimeout(() => btn.textContent = original, 2000);
+            });
+        }
+        function handleCSVUpload(e) {
+            alert('Shazam CSV uploaded! (Full batch parser available in main studio)');
+        }
+        function exportShortcutJSON() {
+            const json = JSON.stringify({name: "Shazam → CRATE CSV", actions: []}, null, 2);
+            navigator.clipboard.writeText(json).then(() => alert('iOS Shortcut JSON copied!'));
+        }
+        console.log('%c✅ tunesnow version loaded - ' + new Date().toISOString(), 'color:#fcd34d;font-family:monospace');
+    </script>
+</body>
+</html>

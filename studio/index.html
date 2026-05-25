@@ -5,18 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>THE STUDIO • CRATE JUICE</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="/studio/styles.css">
-    <link rel="manifest" href="/manifest.json">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#3a2a1f">
-    <!-- iOS Home Screen Icons -->
-    <link rel="apple-touch-icon" href="/icons/cj-orange.svg">
-    <link rel="apple-touch-icon" sizes="180x180" href="/icons/cj-orange.svg">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Architects+Daughter&display=swap');
+        body { font-family: 'Architects Daughter', cursive; }
+        .tape-button { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
+        .tape-button.active { box-shadow: 0 0 0 4px #10b981; }
+    </style>
 </head>
 <body class="bg-[#2c1f14] text-amber-100 min-h-screen">
     <div class="max-w-2xl mx-auto p-6">
-        <!-- Header -->
         <div class="text-center mb-8">
             <div class="inline-block bg-amber-100 text-[#2c1f14] text-6xl font-bold px-8 py-3 rounded-3xl border-4 border-[#3a2a1f]">THE STUDIO</div>
             <p class="text-amber-300 text-xl mt-3 italic">for CHLO & MIMI with all of my love</p>
@@ -48,8 +45,7 @@
         </div>
 
         <!-- UPLOAD SHAZAM CSV -->
-        <button onclick="document.getElementById('csv-upload').click()" class="mt-8 w-full bg-[#3a2a1f] border-2 border-amber-800 text-amber-100 font-bold py-6 rounded-3xl text-xl">UPLOAD SHAZAM CSV</button>
-        <input type="file" id="csv-upload" accept=".csv" class="hidden" onchange="handleCSVUpload(event)">
+        <button onclick="handleCSVUpload()" class="mt-8 w-full bg-[#3a2a1f] border-2 border-amber-800 text-amber-100 font-bold py-6 rounded-3xl text-xl">UPLOAD SHAZAM CSV</button>
 
         <!-- PRO TOOLS PANEL -->
         <div id="pro-tools-panel" class="mt-12 p-8 bg-[#3a2a1f] border-4 border-amber-800 rounded-3xl">
@@ -77,8 +73,4 @@
         <footer class="text-center text-amber-400 text-sm mt-16 opacity-70">
             CRATE JUICE™️ 2006. PLUR.
         </footer>
-    </div>
-
-    <script src="/studio/script.js"></script>
-</body>
-</html>
+    </

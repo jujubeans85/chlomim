@@ -8,8 +8,12 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Architects+Daughter&display=swap');
         body { font-family: 'Architects Daughter', cursive; }
-        .tape-button { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
-        .tape-button.active { box-shadow: 0 0 0 4px #10b981; }
+        .tape-button {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .tape-button.active {
+            box-shadow: 0 0 0 4px #10b981;
+        }
     </style>
 </head>
 <body class="bg-[#2c1f14] text-amber-100 min-h-screen">
@@ -49,32 +53,21 @@
         <button onclick="document.getElementById('csv-upload').click()" class="mt-8 w-full bg-[#3a2a1f] border-2 border-amber-800 text-amber-100 font-bold py-6 rounded-3xl text-xl">UPLOAD SHAZAM CSV</button>
         <input type="file" id="csv-upload" accept=".csv" class="hidden" onchange="handleCSVUpload(event)">
 
-        <!-- PRO TOOLS PANEL - FULL CONTENT -->
+        <!-- PRO TOOLS PANEL -->
         <div id="pro-tools-panel" class="mt-12 p-8 bg-[#3a2a1f] border-4 border-amber-800 rounded-3xl">
             <h2 class="text-3xl mb-6 border-b border-amber-400 pb-4">PRO TOOLS &amp; TACTILE CONTROLS</h2>
-            
-            <div class="space-y-8 text-amber-100">
-                <!-- Djay Pro Mapping -->
+            <div class="space-y-8">
                 <div>
                     <h3 class="text-xl mb-3">Launchpad Mini MK2 + Djay Pro Mapping</h3>
-                    <p class="text-amber-300">4 Decks × 4 Stems (pads 1-16):<br>
-                    Deck A (1-4) • Deck B (5-8) • Deck C (9-12) • Deck D (13-16)<br>
-                    Red = Vocals • Orange = Drums • Yellow = Bass • Green = Other<br>
-                    After stem separation in Djay Pro: instant tactile volume/mute/FX/filter control.</p>
+                    <p class="text-amber-300">4 Decks × 4 Stems (pads 1-16):<br>Deck A (1-4) • Deck B (5-8) • Deck C (9-12) • Deck D (13-16)<br>Red = Vocals • Orange = Drums • Yellow = Bass • Green = Other<br>After stem separation in Djay Pro: instant tactile volume/mute/FX/filter control.</p>
                 </div>
-
-                <!-- TouchOSC / Lemur -->
                 <div>
                     <h3 class="text-xl mb-3">TouchOSC / Lemur</h3>
-                    <p class="text-amber-300">Custom vintage-style iPad control surfaces that look and feel like your analog gear (knobs, faders, switches). Map directly to stems in Djay Pro / Logic / AUM.</p>
+                    <p class="text-amber-300">Custom vintage-style iPad control surfaces (knobs, faders, switches) that match your gear aesthetic.</p>
                 </div>
-
-                <!-- AUM + Audiobus -->
                 <div>
                     <h3 class="text-xl mb-3">AUM + Audiobus</h3>
-                    <p class="text-amber-300">Modular stem FX chains with hardware MIDI (Launchpad pads control real-time effects on each stem across 4 decks).</p>
+                    <p class="text-amber-300">Modular stem FX chains with hardware MIDI – Launchpad pads control real-time effects on each stem.</p>
                 </div>
-
-                <!-- Shortcut Export -->
                 <div class="pt-4 border-t border-amber-400">
-                    <button onclick="exportShortcutJSON()" class
+                    <button onclick="exportShortcutJSON()" class="w-full bg-amber-100 text-[#2c1f14] font-bold py-5 rounded-3

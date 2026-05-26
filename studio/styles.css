@@ -1,1 +1,68 @@
-[UPDATED WITH NEW EQ AND AI TOOL STYLES]
+/* Vintage Peach-Crate Aesthetic - Complete */
+:root {
+--peach: #ff9f6b;
+--sepia: #2c1f14;
+--vignette: rgba(44,31,20,0.85);
+}
+body {
+margin:0;
+padding:0;
+background: url('assets/IMG_0511.jpeg') center/cover no-repeat fixed;
+filter: sepia(0.4) contrast(1.1);
+font-family: 'Georgia', serif;
+color: #f5e8d3;
+overflow-x: hidden;
+}
+.vignette {
+position: fixed;
+inset: 0;
+background: radial-gradient(circle at center, transparent 40%, var(--vignette) 100%);
+pointer-events: none;
+z-index: 10;
+}
+header {
+background: rgba(44,31,20,0.9);
+padding: 15px;
+text-align: center;
+box-shadow: 0 4px 20px rgba(255,159,107,0.3);
+}
+h1 {
+margin:0;
+font-size: 2.2rem;
+letter-spacing: 4px;
+text-shadow: 0 0 10px var(--peach);
+}
+#app-root {
+max-width: 1200px;
+margin: 0 auto;
+padding: 20px;
+}
+.stems-lab, .legacy-panel {
+background: rgba(44,31,20,0.85);
+border: 8px solid #f5e8d3;
+box-shadow: 0 0 30px var(--peach);
+padding: 25px;
+border-radius: 12px;
+margin-bottom: 30px;
+}
+.stems-button, .legacy-button {
+background: var(--peach);
+color: #2c1f14;
+padding: 12px 24px;
+margin: 8px;
+border: none;
+border-radius: 6px;
+font-weight: bold;
+cursor: pointer;
+touch-action: manipulation;
+font-size: 1rem;
+}
+.stems-button:hover, .legacy-button:hover {
+background: #ff8c5a;
+transform: scale(1.05);
+}
+.fader-group { display: flex; gap: 15px; flex-wrap: wrap; }
+.fader { width: 120px; }
+canvas { border: 2px solid var(--peach); background: #2c1f14; }
+.panel-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+.personal-note { font-size: 0.9rem; opacity: 0.7; text-align: center; margin-top: 20px; }

@@ -1,8 +1,13 @@
 [build]
-  publish = "studio"
-  command = "echo 'No build command needed for static CRATE PEACH studio'"
+  publish = "."
+  command = "echo 'No build needed for static CRATE PEACH studio'"
 
-[headers]
+[[headers]]
   for = "/*"
-    [headers.values]
-      Cache-Control = "public, max-age=0, must-revalidate"
+  [headers.values]
+    Cache-Control = "no-cache, must-revalidate, public"
+
+[[redirects]]
+  from = "/grabber/*"
+  to = "/grabber/:splat"
+  status = 200

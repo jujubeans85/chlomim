@@ -3,7 +3,7 @@
 
 body {
     font-family: 'Architects Daughter', cursive;
-    background: url('/studio/assets/background.jpeg') center/cover no-repeat fixed;
+    background: url('/studio/assets/IMG_0511.jpeg') center/cover no-repeat fixed;
     background-color: #2c1f14;
     filter: sepia(0.35) contrast(1.15) brightness(0.9);
     min-height: 100vh;

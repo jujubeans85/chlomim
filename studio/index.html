@@ -1,1 +1,89 @@
-[I will replace with full updated HTML later]
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE STUDIO • CRATE JUICE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Architects+Daughter&display=swap');
+        body { font-family: 'Architects Daughter', cursive; }
+        .tape-button { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
+        .tape-button.active { box-shadow: 0 0 0 4px #10b981; }
+    </style>
+    <!-- CACHE-BUST: 2026-05-26 13:15 AEST -->
+</head>
+<body class="bg-[#2c1f14] text-amber-100 min-h-screen">
+    <div class="max-w-2xl mx-auto p-6">
+        <div class="text-center mb-8">
+            <div class="inline-block bg-amber-100 text-[#2c1f14] text-6xl font-bold px-8 py-3 rounded-3xl border-4 border-[#3a2a1f]">THE STUDIO</div>
+            <p class="text-amber-300 text-xl mt-3 italic">for CHLO & MIMI with all of my love</p>
+        </div>
+
+        <!-- Txt Box -->
+        <div class="bg-[#3a2a1f] border-2 border-amber-800 rounded-3xl p-6 mb-6">
+            <textarea id="url-input" class="w-full bg-transparent text-amber-100 placeholder-amber-400 text-lg outline-none resize-none h-24" placeholder="Txt Box - Paste URL(s) one per line"></textarea>
+        </div>
+
+        <!-- Format Buttons -->
+        <div class="grid grid-cols-2 gap-4 mb-8">
+            <button onclick="selectFormat(this)" class="tape-button bg-amber-100 hover:bg-amber-200 text-[#2c1f14] font-bold py-6 rounded-3xl text-xl border-4 border-[#3a2a1f]">MP3</button>
+            <button onclick="selectFormat(this)" class="tape-button bg-amber-100 hover:bg-amber-200 text-[#2c1f14] font-bold py-6 rounded-3xl text-xl border-4 border-[#3a2a1f] active">WAV ✓</button>
+            <button onclick="selectFormat(this)" class="tape-button bg-amber-100 hover:bg-amber-200 text-[#2c1f14] font-bold py-6 rounded-3xl text-xl border-4 border-[#3a2a1f]">VID ONLY</button>
+            <button onclick="selectFormat(this)" class="tape-button bg-amber-100 hover:bg-amber-200 text-[#2c1f14] font-bold py-6 rounded-3xl text-xl border-4 border-[#3a2a1f]">VID + AUD</button>
+        </div>
+
+        <!-- DROP TO CRATE -->
+        <button onclick="dropToCrate()" class="w-full bg-gradient-to-r from-amber-600 to-[#3a2a1f] text-white font-bold text-3xl py-8 rounded-3xl flex items-center justify-center gap-4 border-4 border-amber-100">🎸 DROP TO CRATE</button>
+
+        <!-- A-SHELL COMMAND -->
+        <div class="mt-8 bg-[#1c140f] border-2 border-amber-800 rounded-3xl p-6">
+            <div class="flex justify-between items-center mb-4">
+                <div class="text-amber-400 font-bold">A-SHELL COMMAND</div>
+                <button onclick="copyScript()" class="bg-amber-100 text-[#2c1f14] px-6 py-2 rounded-2xl font-bold">COPY</button>
+            </div>
+            <pre id="shell-output" class="bg-black/50 text-green-400 p-4 rounded-2xl font-mono text-sm overflow-auto max-h-64 whitespace-pre-wrap"># Professional yt-dlp script will appear here after DROP TO CRATE</pre>
+        </div>
+
+        <!-- UPLOAD SHAZAM CSV -->
+        <button onclick="handleCSVUpload()" class="mt-8 w-full bg-[#3a2a1f] border-2 border-amber-800 text-amber-100 font-bold py-6 rounded-3xl text-xl">UPLOAD SHAZAM CSV</button>
+
+        <!-- PRO TOOLS PANEL -->
+        <div id="pro-tools-panel" class="mt-12 p-8 bg-[#3a2a1f] border-4 border-amber-800 rounded-3xl">
+            <h2 class="text-3xl mb-6 border-b border-amber-400 pb-4">PRO TOOLS & TACTILE CONTROLS</h2>
+            <div class="space-y-8">
+                <div>
+                    <h3 class="text-xl mb-3">Launchpad Mini MK2 + Djay Pro Mapping</h3>
+                    <p class="text-amber-300">4 Decks × 4 Stems (pads 1-16):<br>Deck A (1-4) • Deck B (5-8) • Deck C (9-12) • Deck D (13-16)<br>Red = Vocals • Orange = Drums • Yellow = Bass • Green = Other<br>After stem separation in Djay Pro: instant tactile volume/mute/FX/filter control.</p>
+                </div>
+                <!-- ... other pro tools ... -->
+            </div>
+        </div>
+
+        <!-- NEW: STEMS LAB - Real-Time iOS Audio Stems Player -->
+        <div id="stems-lab" class="mt-12 p-8 bg-[#3a2a1f] border-4 border-amber-800 rounded-3xl">
+            <h2 class="text-3xl mb-6 border-b border-amber-400 pb-4 flex items-center gap-3">
+                <span>🎛️</span> STEMS LAB <span class="text-amber-400 text-xl">• Real-Time Mixer (iOS PWA)</span>
+            </h2>
+            <p class="text-amber-300 mb-6">Upload 4 stems (Vocals, Drums, Bass, Other) for real-time mixing. Perfect for iPad + Spotify screen recordings.</p>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8" id="stems-grid">
+                <!-- Stem channels populated by JS -->
+            </div>
+
+            <div class="flex gap-4">
+                <button onclick="loadDemoStems()" class="flex-1 bg-amber-100 text-[#2c1f14] py-4 rounded-3xl font-bold">LOAD DEMO STEMS</button>
+                <button onclick="togglePlayback()" id="play-btn" class="flex-1 bg-gradient-to-r from-green-500 to-emerald-600 text-white py-4 rounded-3xl font-bold">▶ PLAY ALL STEMS</button>
+            </div>
+            <div class="mt-4 text-center text-xs text-amber-400" id="status">Ready for stem upload • Web Audio API active</div>
+        </div>
+
+        <!-- Footnote -->
+        <footer class="text-center text-amber-400 text-sm mt-16 opacity-70">
+            CRATE JUICE™️ 2006. PLUR. • CRATE PEACH
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

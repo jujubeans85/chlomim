@@ -1,0 +1,8 @@
+[build]
+  publish = "studio"
+  command = "echo 'No build command needed for static CRATE PEACH studio'"
+
+[headers]
+  for = "/*"
+    [headers.values]
+      Cache-Control = "public, max-age=0, must-revalidate"

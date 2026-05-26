@@ -1,0 +1,4 @@
+[publish = "studio"
+[build]
+  command = "echo 'no build needed'"
+  publish = "studio"]

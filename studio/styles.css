@@ -189,3 +189,34 @@ footer {
     margin-right:auto;
   }
 }
+
+textarea {
+  width: 100%;
+  min-height: 82px;
+  margin-top: 14px;
+  padding: 12px;
+  resize: vertical;
+  border-radius: 14px;
+  border: 1px solid rgba(255,157,87,0.35);
+  background: rgba(0,0,0,0.42);
+  color: #fff;
+  font: inherit;
+}
+
+textarea::placeholder {
+  color: rgba(255,255,255,0.58);
+}
+
+.helper-note {
+  font-size: 0.82rem !important;
+  font-family: inherit !important;
+  opacity: 0.82;
+}
+
+.format-btn.active {
+  outline: 2px solid #fff;
+}
+
+.copy-btn {
+  background: #fff !important;
+}

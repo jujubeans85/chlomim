@@ -2,20 +2,48 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>CRATE PEACH • Studio</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#150b06">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="CHLOMIM">
+<title>CHLOMIM • STEM LAB</title>
 <link rel="stylesheet" href="styles.css">
 <link rel="manifest" href="manifest.json">
 </head>
 <body>
-<div class="vignette"></div>
-<header>
-<h1>CRATE PEACH • STUDIO</h1>
-<p>Real-time iOS Music Production • Personal Use Only (Ad + Daughters)</p>
-</header>
-<div id="app-root">
-<!-- Dynamically loaded by main.js -->
-</div>
+<div class="train-bg" aria-hidden="true"></div>
+<div class="smoke" aria-hidden="true"></div>
+<main class="portal" id="top">
+  <section class="sign sign-top" data-action="portal" tabindex="0" role="button" aria-label="Open CHLOMIM portal">
+    <span class="kicker">STEMS LAB</span>
+    <h1>CRATE THRU</h1>
+    <p>portal to chlo+mim</p>
+  </section>
+
+  <section class="sign sign-mid" data-action="batch" tabindex="0" role="button" aria-label="Start batch OK 5">
+    <span class="kicker">STEMS LAB</span>
+    <h2>START BATCH</h2>
+    <p>OK 5</p>
+    <div class="mini-controls">
+      <button>MP3</button><button>WAV</button><button>VID</button><button>VID + AUD</button>
+    </div>
+  </section>
+
+  <section class="sign sign-low" data-action="shell" tabindex="0" role="button" aria-label="Reveal AI shell commands">
+    <span class="kicker">STEMS LAB</span>
+    <h2>GET IMPROVE</h2>
+    <p>AI SHELL COMMANDS</p>
+  </section>
+
+  <aside class="shell-panel" id="shell-panel" aria-live="polite">
+    <b>AI shell starter</b>
+    <code>yt-dlp --extract-audio --audio-format mp3 "URL"</code>
+    <code>ffmpeg -i input.mp4 -vn output.wav</code>
+    <code>drop to crate → sort later → keep Friday alive</code>
+  </aside>
+</main>
+<footer>CHLOMIM · personal Friday lab · PLUR</footer>
+<div class="toast" id="toast">ready</div>
 <script src="main.js"></script>
 </body>
 </html>

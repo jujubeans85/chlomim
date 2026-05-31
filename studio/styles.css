@@ -117,11 +117,12 @@ h2 {
 }
 
 .shell-panel {
-  position:fixed;
-  left:50%;
-  bottom:20px;
-  transform:translateX(-50%);
+  position:relative;
+  left:auto;
+  bottom:auto;
+  transform:none;
   width:min(92vw,700px);
+  margin: -4vh auto 9vh;
   background:rgba(8,8,8,0.92);
   border:1px solid rgba(255,157,87,0.3);
   border-radius:18px;
@@ -134,11 +135,22 @@ h2 {
   display:block;
 }
 
+.shell-panel b {
+  display:block;
+  margin-top:12px;
+  color:#fff;
+}
+
+.shell-panel b:first-child {
+  margin-top:0;
+}
+
 .shell-panel code {
   display:block;
   margin-top:10px;
   color:#ffb37c;
   white-space:pre-wrap;
+  overflow-wrap:anywhere;
   font-size:0.82rem;
 }
 
@@ -175,21 +187,6 @@ footer {
   transform:translateY(0);
 }
 
-@media (max-width:700px) {
-  .portal {
-    padding-top:3vh;
-  }
-
-  .sign,
-  .sign-top,
-  .sign-mid,
-  .sign-low {
-    width:92%;
-    margin-left:auto;
-    margin-right:auto;
-  }
-}
-
 textarea {
   width: 100%;
   min-height: 82px;
@@ -213,10 +210,62 @@ textarea::placeholder {
   opacity: 0.82;
 }
 
+.prompt-line {
+  margin: 8px 0 12px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+  font-size: 0.84rem;
+  white-space: pre-wrap;
+}
+
+#generated-command {
+  user-select: all;
+  -webkit-user-select: all;
+  border: 1px solid rgba(255,157,87,0.35);
+  background: rgba(0,0,0,0.62);
+  padding: 12px;
+  border-radius: 12px;
+}
+
+.legal-note {
+  font-family: inherit !important;
+  font-size: 0.72rem !important;
+  opacity: 0.72;
+  margin-top: 12px !important;
+}
+
+.copy-btn,
+.format-btn {
+  touch-action: manipulation;
+}
+
 .format-btn.active {
   outline: 2px solid #fff;
+  box-shadow: 0 0 12px rgba(255,255,255,0.35);
 }
 
 .copy-btn {
   background: #fff !important;
+}
+
+@media (max-width:700px) {
+  .portal {
+    padding-top:3vh;
+  }
+
+  .sign,
+  .sign-top,
+  .sign-mid,
+  .sign-low {
+    width:92%;
+    margin-left:auto;
+    margin-right:auto;
+  }
+
+  .shell-panel {
+    width:92%;
+    margin-top:-2vh;
+  }
 }

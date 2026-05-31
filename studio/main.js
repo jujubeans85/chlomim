@@ -1,8 +1,8 @@
 const toast = document.getElementById('toast');
 const shellPanel = document.getElementById('shell-panel');
 const sourceInput = document.getElementById('source-url');
-const generatedNote = document.getElementById('generated-note');
-const copyNote = document.getElementById('copy-note');
+const generatedCommand = document.getElementById('generated-command');
+const copyCommand = document.getElementById('copy-command');
 const cleanLinkButton = document.getElementById('clean-link');
 
 let selectedFormat = 'MP3';
@@ -12,6 +12,7 @@ function showToast(message) {
 
   toast.textContent = message;
   toast.classList.add('show');
+
   clearTimeout(window.toastTimer);
 
   window.toastTimer = setTimeout(() => {
@@ -19,15 +20,21 @@ function showToast(message) {
   }, 1800);
 }
 
-function cleanUrl(value) {
-  let url = (value || '').trim();
-  url = url.replace(/[“”]/g, '"').replace(/[‘’]/g, "'");
-  url = url.replace(/^['"]+|['"]+$/g, '');
+function stripOuterQuotes(value) {
+  return String(value || '')
+    .trim()
+    .replace(/[“”]/g, '"')
+    .replace(/[‘’]/g, "'")
+    .replace(/^['"]+|['"]+$/g, '');
+}
 
-  if (!url) return '';
+function cleanUrl(value) {
+  const input = stripOuterQuotes(value);
+
+  if (!input) return '';
 
   try {
-    const parsed = new URL(url);
+    const parsed = new URL(input);
     const host = parsed.hostname.replace(/^www\./, '');
 
     if (host === 'youtu.be') {
@@ -36,47 +43,69 @@ function cleanUrl(value) {
       return parsed.toString();
     }
 
-    const removable = ['si', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'feature', 'fbclid', 'igsh', 'igshid'];
+    const removable = [
+      'si',
+      'utm_source',
+      'utm_medium',
+      'utm_campaign',
+      'utm_term',
+      'utm_content',
+      'feature',
+      'fbclid',
+      'igsh',
+      'igshid'
+    ];
+
     removable.forEach(key => parsed.searchParams.delete(key));
+    parsed.hash = '';
+
     return parsed.toString();
   } catch {
-    return url.split('?')[0];
+    return input.split('?')[0];
   }
 }
 
-function buildWorkflow() {
-  const rawSource = sourceInput?.value.trim() || '';
-  const cleanSource = cleanUrl(rawSource) || 'CLEAN_URL_HERE';
+function shellQuote(value) {
+  const safe = String(value || 'CLEAN_URL_HERE')
+    .replace(/\\/g, '\\\\')
+    .replace(/"/g, '\\"')
+    .replace(/\$/g, '\\$')
+    .replace(/`/g, '\\`');
 
-  const workflow = `STEP 1 — CLEAN LINK
-${cleanSource}
+  return `"${safe}"`;
+}
 
-STEP 2 — PICK OUTPUT
-${selectedFormat}
+function buildCommand() {
+  const cleanSource = cleanUrl(sourceInput?.value || '') || 'CLEAN_URL_HERE';
+  const quotedUrl = shellQuote(cleanSource);
 
-STEP 3 — RUN IN A-SHELL
-Use your personal A-Shell media workflow with the clean link above.
+  const commands = {
+    MP3:
+      `yt-dlp -x --audio-format mp3 --audio-quality 0 -o "$HOME/Documents/CRATE/MP3/%(title)s.%(ext)s" ${quotedUrl}`,
 
-STEP 4 — FIND FILE
-Files app → On My iPad → A-Shell → CRATE → MP3
+    WAV:
+      `yt-dlp -x --audio-format wav -o "$HOME/Documents/CRATE/WAV/%(title)s.%(ext)s" ${quotedUrl}`,
 
-CHECK:
-ls -lh "$HOME/Documents/CRATE/MP3"
+    VIDEO:
+      `yt-dlp -f "bv*+ba/b" --merge-output-format mp4 -o "$HOME/Documents/CRATE/VIDEO/%(title)s.%(ext)s" ${quotedUrl}`,
 
-TROUBLESHOOT:
-If URL fails, remove everything after ?
-If file is missing, check On My iPad / A-Shell / CRATE / MP3
-If command not found, update your tool in A-Shell
-If shell gets weird, stop and return to prompt`;
+    VIDAUD:
+      `yt-dlp -f "bv*+ba/b" --write-thumbnail --embed-metadata --merge-output-format mp4 -o "$HOME/Documents/CRATE/VIDEO/%(title)s.%(ext)s" ${quotedUrl}`
+  };
 
-  if (generatedNote) generatedNote.textContent = workflow;
-  return workflow;
+  const command = commands[selectedFormat] || commands.MP3;
+
+  if (generatedCommand) {
+    generatedCommand.textContent = command;
+  }
+
+  return command;
 }
 
 function handleAction(action) {
   switch (action) {
     case 'portal':
-      showToast('workflow ready');
+      showToast('command helper ready');
       window.scrollTo({ top: 0, behavior: 'smooth' });
       break;
 
@@ -87,15 +116,15 @@ function handleAction(action) {
   }
 }
 
-function bootFridayPortal() {
+function bootChlomimCommandHelper() {
   document.querySelectorAll('.sign[data-action]').forEach(card => {
     card.addEventListener('click', () => {
       handleAction(card.dataset.action);
     });
 
-    card.addEventListener('keypress', e => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
+    card.addEventListener('keypress', event => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
         handleAction(card.dataset.action);
       }
     });
@@ -110,40 +139,47 @@ function bootFridayPortal() {
       });
 
       button.classList.add('active');
-      buildWorkflow();
-      showToast(`${selectedFormat} selected`);
+      buildCommand();
+      showToast(`${button.textContent.trim()} selected`);
     });
   });
 
-  sourceInput?.addEventListener('input', buildWorkflow);
+  sourceInput?.addEventListener('input', buildCommand);
 
   cleanLinkButton?.addEventListener('click', () => {
     if (!sourceInput) return;
+
     const cleaned = cleanUrl(sourceInput.value);
+
+    if (!cleaned) {
+      showToast('paste link first');
+      return;
+    }
+
     sourceInput.value = cleaned;
-    buildWorkflow();
-    showToast(cleaned ? 'link cleaned' : 'paste link first');
+    buildCommand();
+    showToast('link cleaned');
   });
 
-  copyNote?.addEventListener('click', async () => {
-    const workflow = buildWorkflow();
+  copyCommand?.addEventListener('click', async () => {
+    const command = buildCommand();
 
     try {
-      await navigator.clipboard.writeText(workflow);
-      showToast('workflow copied');
+      await navigator.clipboard.writeText(command);
+      showToast('command copied');
     } catch {
-      showToast('copy failed — select manually');
+      showToast('copy failed — select command manually');
     }
   });
 
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('../sw.js').catch(() => {
-      console.log('sw skipped');
+      console.log('service worker skipped');
     });
   }
 
-  buildWorkflow();
+  buildCommand();
   showToast('PLUR online');
 }
 
-window.addEventListener('load', bootFridayPortal);
+window.addEventListener('load', bootChlomimCommandHelper);

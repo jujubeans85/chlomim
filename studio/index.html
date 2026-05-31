@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#150b06">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="CHLOMIM">
-<title>CHLOMIM • A-SHELL NOTES</title>
+<title>CHLOMIM • A-SHELL FLOW</title>
 <link rel="stylesheet" href="styles.css">
 <link rel="manifest" href="manifest.json">
 </head>
@@ -18,46 +18,56 @@
   <section class="sign sign-top" data-action="portal" tabindex="0" role="button" aria-label="Open CHLOMIM helper">
     <span class="kicker">CHLOMIM</span>
     <h1>CRATE THRU</h1>
-    <p>link → a-shell → 🎧</p>
+    <p>clean link → a-shell → mp3 → 🎧</p>
   </section>
 
-  <section class="sign sign-mid launcher-card" aria-label="Drop links here">
-    <span class="kicker">LINK IN</span>
-    <h2>DROP LINKS HERE</h2>
-    <p>Paste a source link or media note.</p>
+  <section class="sign sign-mid launcher-card" aria-label="Drop link here">
+    <span class="kicker">STEP 1 + 2 + 3</span>
+    <h2>DROP LINK HERE</h2>
+    <p>Paste. Clean. Pick format. Copy workflow.</p>
 
-    <textarea id="source-url" placeholder="paste link here"></textarea>
+    <textarea id="source-url" placeholder="paste source link here"></textarea>
 
-    <div class="mini-controls" role="group" aria-label="format notes">
-      <button class="format-btn active" data-format="MP3 NOTE">MP3 NOTE</button>
-      <button class="format-btn" data-format="WAV NOTE">WAV NOTE</button>
-      <button class="format-btn" data-format="VIDEO NOTE">VIDEO NOTE</button>
-      <button class="format-btn" data-format="VID + AUD NOTE">VID + AUD NOTE</button>
-      <button id="copy-note" class="copy-btn">COPY NOTE</button>
+    <div class="mini-controls" role="group" aria-label="link and format controls">
+      <button id="clean-link" class="copy-btn">CLEAN LINK</button>
+      <button class="format-btn active" data-format="MP3">MP3</button>
+      <button class="format-btn" data-format="WAV">WAV</button>
+      <button class="format-btn" data-format="VIDEO">VIDEO</button>
+      <button class="format-btn" data-format="VID + AUD">VID + AUD</button>
+      <button id="copy-note" class="copy-btn">COPY WORKFLOW</button>
     </div>
 
-    <p class="helper-note">Paste link. Pick format. Copy note. Run your own A-Shell workflow. Headphones on.</p>
+    <p class="helper-note">URL → A-Shell → MP3 → headphones.</p>
   </section>
 
-  <section class="sign sign-low" data-action="shell" tabindex="0" role="button" aria-label="Reveal A-Shell notes">
-    <span class="kicker">A-SHELL</span>
-    <h2>A-SHELL NOTES</h2>
-    <p>copy / run / listen</p>
+  <section class="sign sign-low" data-action="shell" tabindex="0" role="button" aria-label="Reveal A-Shell path">
+    <span class="kicker">STEP 4</span>
+    <h2>A-SHELL PATH</h2>
+    <p>On My iPad / A-Shell / CRATE / MP3</p>
   </section>
 
   <aside class="shell-panel show" id="shell-panel" aria-live="polite">
-    <b>Workflow note</b>
-    <code id="generated-note">SOURCE:
-URL
+    <b>User-friendly process</b>
+    <code id="generated-note">STEP 1 — CLEAN LINK
+Paste a source link. Remove tracking junk after ? where safe.
 
-FORMAT:
-MP3 NOTE
+STEP 2 — PICK OUTPUT
+MP3
 
-RUN IN:
-A-Shell / Files / headphones
+STEP 3 — RUN IN A-SHELL
+Use your personal A-Shell media workflow with the clean link.
 
-NOTE:
-Use only for personal files, your own media, permitted downloads, or properly licensed sources.</code>
+STEP 4 — FIND FILE
+Files app → On My iPad → A-Shell → CRATE → MP3
+
+CHECK:
+ls -lh "$HOME/Documents/CRATE/MP3"
+
+TROUBLESHOOT:
+If URL fails, remove everything after ?
+If file is missing, check On My iPad / A-Shell / CRATE / MP3
+If command not found, update your tool in A-Shell
+If shell gets weird, stop and return to prompt</code>
   </aside>
 </main>
 

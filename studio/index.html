@@ -6,38 +6,39 @@
 <meta name="theme-color" content="#150b06">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="CHLOMIM">
-<title>CHLOMIM • A-SHELL FLOW</title>
+<title>CHLOMIM • A-SHELL COMMAND</title>
 <link rel="stylesheet" href="styles.css">
 <link rel="manifest" href="manifest.json">
 </head>
+
 <body>
 <div class="train-bg" aria-hidden="true"></div>
 <div class="smoke" aria-hidden="true"></div>
 
 <main class="portal" id="top">
-  <section class="sign sign-top" data-action="portal" tabindex="0" role="button" aria-label="Open CHLOMIM helper">
+  <section class="sign sign-top" data-action="portal" tabindex="0" role="button" aria-label="Open CHLOMIM command helper">
     <span class="kicker">CHLOMIM</span>
-    <h1>CRATE THRU</h1>
+    <h1>CRATE JUICE CANS</h1>
     <p>clean link → a-shell → mp3 → 🎧</p>
   </section>
 
   <section class="sign sign-mid launcher-card" aria-label="Drop link here">
     <span class="kicker">STEP 1 + 2 + 3</span>
     <h2>DROP LINK HERE</h2>
-    <p>Paste. Clean. Pick format. Copy workflow.</p>
+    <p>Paste. Clean. Pick format. Copy command.</p>
 
     <textarea id="source-url" placeholder="paste source link here"></textarea>
 
     <div class="mini-controls" role="group" aria-label="link and format controls">
-      <button id="clean-link" class="copy-btn">CLEAN LINK</button>
-      <button class="format-btn active" data-format="MP3">MP3</button>
-      <button class="format-btn" data-format="WAV">WAV</button>
-      <button class="format-btn" data-format="VIDEO">VIDEO</button>
-      <button class="format-btn" data-format="VID + AUD">VID + AUD</button>
-      <button id="copy-note" class="copy-btn">COPY WORKFLOW</button>
+      <button id="clean-link" class="copy-btn" type="button">CLEAN LINK</button>
+      <button class="format-btn active" data-format="MP3" type="button">MP3</button>
+      <button class="format-btn" data-format="WAV" type="button">WAV</button>
+      <button class="format-btn" data-format="VIDEO" type="button">VIDEO</button>
+      <button class="format-btn" data-format="VIDAUD" type="button">VID + AUD</button>
+      <button id="copy-command" class="copy-btn" type="button">COPY COMMAND</button>
     </div>
 
-    <p class="helper-note">URL → A-Shell → MP3 → headphones.</p>
+    <p class="helper-note">Copy this after the A-Shell prompt. Do not include <b>[~/Documents]$</b>.</p>
   </section>
 
   <section class="sign sign-low" data-action="shell" tabindex="0" role="button" aria-label="Reveal A-Shell path">
@@ -47,32 +48,31 @@
   </section>
 
   <aside class="shell-panel show" id="shell-panel" aria-live="polite">
-    <b>User-friendly process</b>
-    <code id="generated-note">STEP 1 — CLEAN LINK
-Paste a source link. Remove tracking junk after ? where safe.
+    <b>COPY THIS AFTER:</b>
+    <pre class="prompt-line">[~/Documents]$</pre>
 
-STEP 2 — PICK OUTPUT
-MP3
+    <b>Generated command</b>
+    <code id="generated-command">Paste a clean link first.</code>
 
-STEP 3 — RUN IN A-SHELL
-Use your personal A-Shell media workflow with the clean link.
+    <b>Find file</b>
+    <code>Files app → On My iPad → A-Shell → CRATE → MP3</code>
 
-STEP 4 — FIND FILE
-Files app → On My iPad → A-Shell → CRATE → MP3
+    <b>Check in A-Shell</b>
+    <code>ls -lh "$HOME/Documents/CRATE/MP3"</code>
 
-CHECK:
-ls -lh "$HOME/Documents/CRATE/MP3"
-
-TROUBLESHOOT:
-If URL fails, remove everything after ?
+    <b>Troubleshooting</b>
+    <code>If URL fails, remove everything after ?
 If file is missing, check On My iPad / A-Shell / CRATE / MP3
-If command not found, update your tool in A-Shell
-If shell gets weird, stop and return to prompt</code>
+If yt-dlp is missing, run: pip install --upgrade yt-dlp
+If shell gets weird, cancel and return to prompt before pasting again</code>
+
+    <p class="legal-note">Personal/permitted media only. No in-browser downloader. This page only copies a command you run yourself.</p>
   </aside>
 </main>
 
-<footer>CHLOMIM · personal Friday lab · PLUR</footer>
+<footer>FOR CHLOBO N MIMI · PERSONAL LAB · JUICE PLUR</footer>
 <div class="toast" id="toast">ready</div>
+
 <script src="main.js"></script>
 </body>
 </html>

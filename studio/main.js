@@ -3,15 +3,15 @@ const shellPanel = document.getElementById('shell-panel');
 const sourceInput = document.getElementById('source-url');
 const generatedNote = document.getElementById('generated-note');
 const copyNote = document.getElementById('copy-note');
+const cleanLinkButton = document.getElementById('clean-link');
 
-let selectedFormat = 'MP3 NOTE';
+let selectedFormat = 'MP3';
 
 function showToast(message) {
   if (!toast) return;
 
   toast.textContent = message;
   toast.classList.add('show');
-
   clearTimeout(window.toastTimer);
 
   window.toastTimer = setTimeout(() => {
@@ -19,36 +19,70 @@ function showToast(message) {
   }, 1800);
 }
 
-function buildNote() {
-  const source = sourceInput?.value.trim() || 'URL';
+function cleanUrl(value) {
+  let url = (value || '').trim();
+  url = url.replace(/[“”]/g, '"').replace(/[‘’]/g, "'");
+  url = url.replace(/^['"]+|['"]+$/g, '');
 
-  const note = `SOURCE:
-${source}
+  if (!url) return '';
 
-FORMAT:
+  try {
+    const parsed = new URL(url);
+    const host = parsed.hostname.replace(/^www\./, '');
+
+    if (host === 'youtu.be') {
+      parsed.search = '';
+      parsed.hash = '';
+      return parsed.toString();
+    }
+
+    const removable = ['si', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'feature', 'fbclid', 'igsh', 'igshid'];
+    removable.forEach(key => parsed.searchParams.delete(key));
+    return parsed.toString();
+  } catch {
+    return url.split('?')[0];
+  }
+}
+
+function buildWorkflow() {
+  const rawSource = sourceInput?.value.trim() || '';
+  const cleanSource = cleanUrl(rawSource) || 'CLEAN_URL_HERE';
+
+  const workflow = `STEP 1 — CLEAN LINK
+${cleanSource}
+
+STEP 2 — PICK OUTPUT
 ${selectedFormat}
 
-RUN IN:
-A-Shell / Files / headphones
+STEP 3 — RUN IN A-SHELL
+Use your personal A-Shell media workflow with the clean link above.
 
-NOTE:
-Use only for personal files, your own media, permitted downloads, or properly licensed sources.`;
+STEP 4 — FIND FILE
+Files app → On My iPad → A-Shell → CRATE → MP3
 
-  if (generatedNote) generatedNote.textContent = note;
+CHECK:
+ls -lh "$HOME/Documents/CRATE/MP3"
 
-  return note;
+TROUBLESHOOT:
+If URL fails, remove everything after ?
+If file is missing, check On My iPad / A-Shell / CRATE / MP3
+If command not found, update your tool in A-Shell
+If shell gets weird, stop and return to prompt`;
+
+  if (generatedNote) generatedNote.textContent = workflow;
+  return workflow;
 }
 
 function handleAction(action) {
   switch (action) {
     case 'portal':
-      showToast('portal ready');
+      showToast('workflow ready');
       window.scrollTo({ top: 0, behavior: 'smooth' });
       break;
 
     case 'shell':
       shellPanel?.classList.toggle('show');
-      showToast(shellPanel?.classList.contains('show') ? 'notes shown' : 'notes hidden');
+      showToast(shellPanel?.classList.contains('show') ? 'path shown' : 'path hidden');
       break;
   }
 }
@@ -69,28 +103,36 @@ function bootFridayPortal() {
 
   document.querySelectorAll('.format-btn').forEach(button => {
     button.addEventListener('click', () => {
-      selectedFormat = button.dataset.format || 'MP3 NOTE';
+      selectedFormat = button.dataset.format || 'MP3';
 
       document.querySelectorAll('.format-btn').forEach(btn => {
         btn.classList.remove('active');
       });
 
       button.classList.add('active');
-      buildNote();
-      showToast(selectedFormat);
+      buildWorkflow();
+      showToast(`${selectedFormat} selected`);
     });
   });
 
-  sourceInput?.addEventListener('input', buildNote);
+  sourceInput?.addEventListener('input', buildWorkflow);
+
+  cleanLinkButton?.addEventListener('click', () => {
+    if (!sourceInput) return;
+    const cleaned = cleanUrl(sourceInput.value);
+    sourceInput.value = cleaned;
+    buildWorkflow();
+    showToast(cleaned ? 'link cleaned' : 'paste link first');
+  });
 
   copyNote?.addEventListener('click', async () => {
-    const note = buildNote();
+    const workflow = buildWorkflow();
 
     try {
-      await navigator.clipboard.writeText(note);
-      showToast('note copied');
+      await navigator.clipboard.writeText(workflow);
+      showToast('workflow copied');
     } catch {
-      showToast('copy failed — select note manually');
+      showToast('copy failed — select manually');
     }
   });
 
@@ -100,7 +142,7 @@ function bootFridayPortal() {
     });
   }
 
-  buildNote();
+  buildWorkflow();
   showToast('PLUR online');
 }
 

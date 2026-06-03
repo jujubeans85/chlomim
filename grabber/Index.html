@@ -83,4 +83,31 @@
         if (!input) return alert("Paste at least one URL");
         let cmd = 'yt-dlp --concurrent-fragments 16 --retries infinite --embed-metadata --embed-thumbnail --embed-chapters ';
         let note = '';
-        if (type === 'mp3') { cmd += '-x --audio-format mp
+        if (type === 'mp3') { cmd += '-x --audio-format mp3 --audio-quality 0 '; note = 'Professional MP3'; }
+        else if (type === 'wav') { cmd += '-x --audio-format wav '; note = 'Lossless WAV'; }
+        else if (type === 'vid') { cmd += '-f bestvideo '; note = 'Video only'; }
+        else if (type === 'vid+aud') { cmd += ''; note = 'Video + Audio'; }
+        cmd += `"${input}" --output "%(title)s.%(ext)s"`;
+        document.getElementById('commandText').textContent = cmd;
+        document.getElementById('aiPromptBox').innerHTML = `<strong>AI Batch Post-Processing Prompt (copy to any AI):</strong><br>Take these downloaded files and perform professional post-processing: ID3v2.4 tagging, frequency manipulation (EQ, compression, loudness normalization), beat matching, stem separation if needed, and any creative effects for DJ / Logic Pro use. Output tagged, ready-to-use files.`;
+        document.getElementById('commandBox').classList.remove('hidden');
+    }
+
+    function dropInTheCrate() {
+        const text = document.getElementById('commandText').textContent;
+        navigator.clipboard.writeText(text).then(() => {
+            alert("✅ Command copied!\n\nOpen A-Shell → long-press → Paste\n\nAI prompt is ready below for post-processing.");
+        });
+    }
+
+    function copyAShellSetup() {
+        const setup = `cd ~ && python3 -m pip install -U yt-dlp-apple-webkit-jsi && mkdir -p bin && cd bin && curl -L https://github.com/holzschu/a-Shell-commands/releases/download/0.1/ffmpeg.wasm -o ffmpeg.wasm && echo 'export PATH="$HOME/bin:$PATH"' >> ~/.profile && echo '✅ SETUP COMPLETE — close & reopen A-Shell completely' && hash -r`;
+        navigator.clipboard.writeText(setup).then(() => {
+            alert("✅ Full one-command A-Shell setup copied!\n\nPaste it once into A-Shell, then close & reopen the app.");
+        });
+    }
+
+    window.onload = () => {};
+</script>
+</body>
+</html>

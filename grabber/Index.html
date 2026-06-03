@@ -23,12 +23,7 @@
             -webkit-background-clip: text; 
             -webkit-text-fill-color: transparent; 
         }
-        .tape { 
-            background: #d97706; 
-            color: #1a1208; 
-            transform: rotate(-2deg); 
-            box-shadow: 3px 3px 0 #1a1208; 
-        }
+        .tape { background: #d97706; color: #1a1208; transform: rotate(-2deg); box-shadow: 3px 3px 0 #1a1208; }
         .glass {
             background: rgba(255,255,255,0.10);
             backdrop-filter: blur(16px);
@@ -38,7 +33,6 @@
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .glass:active { transform: scale(0.96); }
-        button { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
     </style>
 </head>
 <body class="crate-bg bg-zinc-950 text-white min-h-screen">
@@ -68,6 +62,11 @@
         🪕 DROP TO CRATE
     </button>
 
+    <button onclick="copyAShellSetup()" 
+            class="mt-4 w-full py-4 glass rounded-3xl font-medium text-sm text-white flex items-center justify-center gap-2">
+        📋 GET A-SHELL SETUP COMMAND (one-tap)
+    </button>
+
     <div id="commandBox" class="hidden mt-8 glass rounded-3xl p-6">
         <pre id="commandText" class="text-emerald-300 text-sm whitespace-pre-wrap"></pre>
         <p id="aiPromptBox" class="mt-6 text-xs text-amber-300"></p>
@@ -84,24 +83,4 @@
         if (!input) return alert("Paste at least one URL");
         let cmd = 'yt-dlp --concurrent-fragments 16 --retries infinite --embed-metadata --embed-thumbnail --embed-chapters ';
         let note = '';
-        if (type === 'mp3') { cmd += '-x --audio-format mp3 --audio-quality 0 '; note = 'Professional MP3'; }
-        else if (type === 'wav') { cmd += '-x --audio-format wav '; note = 'Lossless WAV'; }
-        else if (type === 'vid') { cmd += '-f bestvideo '; note = 'Video only'; }
-        else if (type === 'vid+aud') { cmd += ''; note = 'Video + Audio'; }
-        cmd += `"${input}" --output "%(title)s.%(ext)s"`;
-        document.getElementById('commandText').textContent = cmd;
-        document.getElementById('aiPromptBox').innerHTML = `<strong>AI Batch Post-Processing Prompt (copy to any AI):</strong><br>Take these downloaded files and perform professional post-processing: ID3v2.4 tagging, frequency manipulation (EQ, compression, loudness normalization), beat matching, stem separation if needed, and any creative effects for DJ / Logic Pro use. Output tagged, ready-to-use files.`;
-        document.getElementById('commandBox').classList.remove('hidden');
-    }
-
-    function dropInTheCrate() {
-        const text = document.getElementById('commandText').textContent;
-        navigator.clipboard.writeText(text).then(() => {
-            alert("✅ Command copied!\n\nOpen A-Shell → long-press → Paste\n\nAI prompt is ready below for post-processing.");
-        });
-    }
-
-    window.onload = () => {};
-</script>
-</body>
-</html>
+        if (type === 'mp3') { cmd += '-x --audio-format mp

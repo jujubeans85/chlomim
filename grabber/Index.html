@@ -3,111 +3,532 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CRATE GRABBER • CRATE JUICE™️</title>
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#d97706">
+    <meta name="theme-color" content="#9f3e0f">
+    <meta name="apple-mobile-web-app-title" content="Crate Grabber">
+    <title>CRATE GRABBER • THE STUDIO</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-        .crate-bg { 
-            background: linear-gradient(rgba(35,18,8,0.90), rgba(55,28,12,0.93)), 
-                        url('https://picsum.photos/id/1015/2000/1400') center/cover no-repeat fixed; 
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;family=Space+Grotesk:wght@500;600&amp;display=swap');
+        
+        :root {
+            --orange-glow: #fb923c;
         }
-        .header-graffiti { 
-            font-size: 3.8rem; 
-            font-weight: 900; 
-            text-shadow: 8px 8px 0 #1a1208, -4px -4px 0 #f59e0b, 0 0 20px #22d3ee; 
-            letter-spacing: -6px; 
-            background: linear-gradient(90deg, #f59e0b, #22d3ee); 
-            -webkit-background-clip: text; 
-            -webkit-text-fill-color: transparent; 
+        
+        body {
+            font-family: 'Inter', system_ui, sans-serif;
         }
-        .tape { background: #d97706; color: #1a1208; transform: rotate(-2deg); box-shadow: 3px 3px 0 #1a1208; }
+        
+        .graffiti-header {
+            font-family: 'Space Grotesk', 'Inter', sans-serif;
+            font-weight: 700;
+            letter-spacing: -3.5px;
+            text-shadow: 
+                0 0 10px rgba(251, 146, 60, 0.5),
+                0 4px 20px rgba(0, 0, 0, 0.6);
+        }
+
         .glass {
-            background: rgba(255,255,255,0.10);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255,255,255,0.25);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.35);
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(251, 146, 60, 0.18);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.45),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.12);
         }
-        .glass:active { transform: scale(0.96); }
+
+        .warm-gradient {
+            background: linear-gradient(180deg, #1a120b 0%, #2c1810 100%);
+        }
+
+        .tape-label {
+            font-family: 'Space Grotesk', sans-serif;
+            letter-spacing: 1px;
+            text-shadow: 1px 1px 0 rgba(0,0,0,0.6);
+        }
+
+        .studio-btn {
+            transition: all 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .studio-btn:active {
+            transform: scale(0.985);
+        }
+
+        .format-btn {
+            transition: all 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        
+        .format-btn.active {
+            border-color: #fb923c;
+            box-shadow: 0 0 0 3px rgba(251, 146, 60, 0.2),
+                        0 10px 30px rgba(0, 0, 0, 0.3);
+            transform: translateY(-1px);
+        }
+
+        .neon-text {
+            text-shadow: 
+                0 0 8px rgba(251, 146, 60, 0.7),
+                0 0 20px rgba(251, 146, 60, 0.4);
+        }
+
+        .command-pre {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            background: rgba(15, 8, 3, 0.85);
+            border: 1px solid rgba(251, 146, 60, 0.15);
+        }
+
+        .vignette {
+            box-shadow: inset 0 0 120px rgba(0, 0, 0, 0.65);
+        }
+
+        .analog-text {
+            font-family: 'Space Grotesk', sans-serif;
+            letter-spacing: 2.5px;
+        }
+
+        .section-header {
+            font-size: 13px;
+            letter-spacing: 2px;
+            font-weight: 600;
+        }
     </style>
 </head>
-<body class="crate-bg bg-zinc-950 text-white min-h-screen">
-<div class="max-w-2xl mx-auto p-5 safe-area">
-    <div class="flex justify-center mb-6">
-        <div class="bg-white/90 text-[#1a1208] px-8 py-3 rounded-3xl shadow-2xl inline-block header-graffiti">THE STUDIO</div>
+<body class="warm-gradient text-amber-100 min-h-screen overflow-x-hidden">
+    <!-- BACKGROUND IMAGE PLACEHOLDER + INSTRUCTIONS -->
+    <!-- 
+    ╔══════════════════════════════════════════════════════════════════════════════╗
+    ║  EXACT BACKGROUND IMAGE SETUP (DO THIS FIRST - 2 MINUTES)                     ║
+    ╠══════════════════════════════════════════════════════════════════════════════╣
+    ║  1. Your provided vintage tape machine photo is PERFECT. If it's HEIC:        ║
+    ║     Open in iOS Photos → Share → "Save as JPG" or use any free converter.     ║
+    ║                                                                              ║
+    ║  2. In your GitHub repo (jujubeans85/chlomim or equivalent):                 ║
+    ║     • Create folder: grabber/                                                ║
+    ║     • Upload the JPG as: crate-grabber-bg.jpg                                ║
+    ║                                                                              ║
+    ║  3. Copy the RAW URL (replace YOUR_BRANCH if not main):                      ║
+    ║     https://raw.githubusercontent.com/jujubeans85/chlomim/main/grabber/crate-grabber-bg.jpg
+    ║                                                                              ║
+    ║  4. In the CSS below, replace:                                               ║
+    ║     url('YOUR_IMAGE_URL_HERE')                                               ║
+    ║     with the raw GitHub URL above.                                           ║
+    ║                                                                              ║
+    ║  5. git add grabber/ && git commit -m "feat: CRATE GRABBER bg + PWA v1.0"    ║
+    ║     && git push                                                              ║
+    ║                                                                              ║
+    ║  Alternative quick host (temporary): Upload to imgur.com → right-click image ║
+    ║  → "Copy image address" (direct .jpg link)                                   ║
+    ╚══════════════════════════════════════════════════════════════════════════════╝
+    -->
+    
+    <div class="min-h-screen bg-cover bg-center bg-no-repeat vignette"
+         style="background-image: linear-gradient(to bottom, rgba(15,8,3,0.78), rgba(25,12,5,0.88)), url('https://raw.githubusercontent.com/jujubeans85/chlomim/main/grabber/crate-grabber-bg.jpg');">
+        
+        <!-- Top nav / header -->
+        <div class="max-w-5xl mx-auto px-6 pt-8 pb-4 flex items-center justify-between">
+            <div>
+                <div class="flex items-center gap-x-3">
+                    <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-orange-400 to-amber-600 flex items-center justify-center shadow-inner">
+                        <i class="fa-solid fa-headset text-white text-3xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="graffiti-header text-6xl md:text-7xl font-black tracking-[-3.5px] text-amber-100">CRATE GRABBER</h1>
+                        <p class="text-[11px] text-amber-400/80 -mt-1 tracking-[3px] font-medium">THE STUDIO • iOS A-SHELL POWERED</p>
+                    </div>
+                </div>
+            </div>
+            
+            <button onclick="copySetupCommand()"
+                    class="px-5 py-2.5 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/20 text-sm font-semibold flex items-center gap-x-2 transition-all active:scale-[0.985]">
+                <i class="fa-solid fa-terminal"></i>
+                <span class="hidden md:inline">GET A-SHELL SETUP</span>
+                <span class="md:hidden">SETUP</span>
+            </button>
+        </div>
+
+        <div class="max-w-5xl mx-auto px-6 pb-12">
+            
+            <!-- Hero description -->
+            <div class="mb-8 text-center">
+                <p class="text-xl text-amber-200/90 max-w-md mx-auto">
+                    Drop URLs. Grab crates.<br>
+                    <span class="text-amber-400">Professional yt-dlp commands for iOS A-Shell.</span>
+                </p>
+            </div>
+
+            <!-- Main glass panel -->
+            <div class="glass rounded-3xl p-8 md:p-10 shadow-2xl">
+                
+                <!-- URL Input -->
+                <div class="mb-8">
+                    <div class="flex items-center justify-between mb-3 px-1">
+                        <div class="section-header text-amber-400 flex items-center gap-x-2">
+                            <i class="fa-solid fa-link"></i> 
+                            <span>URLS (one per line)</span>
+                        </div>
+                        <button onclick="clearAll()" 
+                                class="text-xs px-3 py-1 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-amber-300/70 transition-colors">
+                            CLEAR ALL
+                        </button>
+                    </div>
+                    <textarea id="url-input" rows="6" 
+                              class="w-full bg-black/40 border border-white/15 focus:border-orange-400/60 rounded-2xl p-5 text-lg placeholder:text-amber-900/60 font-mono resize-y min-h-[148px]"
+                              placeholder="https://youtube.com/watch?v=...
+https://soundcloud.com/artist/track
+https://bandcamp.com/album/track"></textarea>
+                    <p class="text-[10px] text-amber-400/60 mt-2 px-1">YouTube • SoundCloud • Bandcamp • 1000+ yt-dlp sites supported</p>
+                </div>
+
+                <!-- Format Buttons -->
+                <div class="mb-8">
+                    <div class="section-header text-amber-400 mb-3 px-1 flex items-center gap-x-2">
+                        <i class="fa-solid fa-sliders-h"></i> 
+                        <span>FORMAT</span>
+                    </div>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                        
+                        <button onclick="selectFormat('mp3', this)" 
+                                class="format-btn active glass px-6 py-5 rounded-2xl flex flex-col items-center justify-center gap-y-1 border-2 border-orange-400/70 hover:border-orange-400 group"
+                                data-format="mp3">
+                            <div class="text-3xl mb-1">🎵</div>
+                            <div class="font-bold tracking-wider text-lg">MP3</div>
+                            <div class="text-[10px] text-amber-300/70">Best quality audio</div>
+                        </button>
+                        
+                        <button onclick="selectFormat('wav', this)" 
+                                class="format-btn glass px-6 py-5 rounded-2xl flex flex-col items-center justify-center gap-y-1 border-2 border-white/20 hover:border-white/40 group"
+                                data-format="wav">
+                            <div class="text-3xl mb-1">📼</div>
+                            <div class="font-bold tracking-wider text-lg">WAV</div>
+                            <div class="text-[10px] text-amber-300/70">Lossless • Large files</div>
+                        </button>
+                        
+                        <button onclick="selectFormat('vid', this)" 
+                                class="format-btn glass px-6 py-5 rounded-2xl flex flex-col items-center justify-center gap-y-1 border-2 border-white/20 hover:border-white/40 group"
+                                data-format="vid">
+                            <div class="text-3xl mb-1">🎬</div>
+                            <div class="font-bold tracking-wider text-lg">VID</div>
+                            <div class="text-[10px] text-amber-300/70">Best video + audio</div>
+                        </button>
+                        
+                        <button onclick="selectFormat('vidaud', this)" 
+                                class="format-btn glass px-6 py-5 rounded-2xl flex flex-col items-center justify-center gap-y-1 border-2 border-white/20 hover:border-white/40 group"
+                                data-format="vidaud">
+                            <div class="text-3xl mb-1">🎞️</div>
+                            <div class="font-bold tracking-wider text-lg">VID + AUD</div>
+                            <div class="text-[10px] text-amber-300/70">Separate files (editors)</div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Big Drop Button -->
+                <button onclick="generateCrateCommand()"
+                        class="studio-btn w-full py-7 rounded-3xl bg-gradient-to-r from-orange-500 via-amber-500 to-orange-600 hover:from-orange-600 hover:to-amber-600 text-white font-black text-3xl tracking-[-1.5px] shadow-[0_10px_40px_rgb(245,158,11,0.4)] flex items-center justify-center gap-x-4 active:scale-[0.985] border border-orange-300/30">
+                    <span>🪕</span>
+                    <span>DROP TO CRATE</span>
+                </button>
+                
+                <p class="text-center text-[10px] text-amber-400/50 mt-3 tracking-widest">GENERATES PROFESSIONAL yt-dlp + ONE-LINER WRAPPER</p>
+            </div>
+
+            <!-- OUTPUT SECTION -->
+            <div id="output-section" class="hidden mt-8 glass rounded-3xl p-8 md:p-10">
+                <div class="flex items-center justify-between mb-6">
+                    <div class="flex items-center gap-x-3">
+                        <div class="w-9 h-9 rounded-2xl bg-orange-500/90 flex items-center justify-center">
+                            <i class="fa-solid fa-box text-white"></i>
+                        </div>
+                        <div>
+                            <div class="font-bold text-2xl tracking-tight">YOUR CRATE IS READY</div>
+                            <div class="text-xs text-amber-400/70 -mt-0.5">Copy &amp; paste directly into A-Shell</div>
+                        </div>
+                    </div>
+                    <button onclick="hideOutput()" class="text-amber-400/60 hover:text-amber-300 px-4 py-1 text-sm">CLOSE</button>
+                </div>
+
+                <!-- Warnings -->
+                <div id="warning-box" class="hidden mb-6 p-4 rounded-2xl bg-red-950/60 border border-red-500/30 text-sm"></div>
+
+                <!-- yt-dlp Command -->
+                <div class="mb-6">
+                    <div class="flex items-center justify-between mb-2 px-1">
+                        <div class="section-header text-orange-400">yt-dlp COMMAND</div>
+                        <button onclick="copyToClipboard('command-output', this)" 
+                                class="text-xs flex items-center gap-x-1.5 px-4 py-1.5 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/15 transition-colors">
+                            <i class="fa-solid fa-copy"></i> <span>COPY</span>
+                        </button>
+                    </div>
+                    <pre id="command-output" class="command-pre text-emerald-300 p-5 rounded-2xl text-sm overflow-x-auto whitespace-pre-wrap"></pre>
+                </div>
+
+                <!-- One-liner Wrapper -->
+                <div class="mb-6">
+                    <div class="flex items-center justify-between mb-2 px-1">
+                        <div class="section-header text-orange-400">ONE-LINER SHELL WRAPPER (PASTE &amp; RUN)</div>
+                        <button onclick="copyToClipboard('wrapper-output', this)" 
+                                class="text-xs flex items-center gap-x-1.5 px-4 py-1.5 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/15 transition-colors">
+                            <i class="fa-solid fa-copy"></i> <span>COPY</span>
+                        </button>
+                    </div>
+                    <pre id="wrapper-output" class="command-pre text-amber-300 p-5 rounded-2xl text-sm overflow-x-auto whitespace-pre-wrap"></pre>
+                </div>
+
+                <!-- Post-processing prompt -->
+                <div>
+                    <div class="flex items-center justify-between mb-2 px-1">
+                        <div class="section-header text-orange-400">✨ AI POST-PROCESSING PROMPT (Logic / Suno / Udio / DAW)</div>
+                        <button onclick="copyToClipboard('postprompt-output', this)" 
+                                class="text-xs flex items-center gap-x-1.5 px-4 py-1.5 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/15 transition-colors">
+                            <i class="fa-solid fa-copy"></i> <span>COPY</span>
+                        </button>
+                    </div>
+                    <div id="postprompt-output" 
+                         class="command-pre text-amber-200/90 p-5 rounded-2xl text-sm leading-relaxed cursor-pointer"
+                         onclick="copyToClipboard('postprompt-output', this)">
+                        Take these tracks. Detect BPM and musical key. Apply gentle analog-style warmth EQ (slight 2–3 dB boost around 80–120 Hz and 8–12 kHz air). Light dynamic compression (ratio 3:1, fast attack). Normalize to −1 dBTP. Add rich metadata tags for crate organization. If stems are available, prepare clean vocal/instrumental splits. Ready for crate digging or live performance.
+                    </div>
+                </div>
+            </div>
+
+            <!-- iOS PWA Install hint -->
+            <div class="mt-8 text-center">
+                <div class="inline-flex items-center gap-x-2 text-xs px-5 py-2 rounded-3xl bg-white/5 border border-white/10 text-amber-300/70">
+                    <i class="fa-brands fa-apple"></i>
+                    <span><strong>iOS:</strong> Tap Share → “Add to Home Screen” for native feel</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="max-w-5xl mx-auto px-6 pb-10 text-center">
+            <div class="text-[10px] tracking-[1.5px] text-amber-400/60">
+                for CHLO &amp; MIMI with all of my love • CRATE JUICE™ Since ’23
+            </div>
+            <div class="text-[9px] text-amber-500/40 mt-1">Single-file PWA • Production v1.0 • Built for the analog heart of the digital crate</div>
+        </div>
     </div>
-    <p class="text-center text-orange-300 text-2xl -mt-4 mb-6">for CHLO &amp; MIMI with all of my love</p>
-    <div class="flex justify-center mb-8">
-        <div class="tape inline-block px-8 py-1 text-sm font-bold tracking-widest">NAVIGATION ISAK</div>
-    </div>
 
-    <div class="glass rounded-3xl p-6 mb-8">
-        <textarea id="urlInput" rows="6" placeholder="Paste multiple URLs here — one per line (YouTube, Spotify, SoundCloud, Bandcamp...)" 
-                  class="w-full bg-transparent text-white placeholder:text-amber-300 focus:outline-none resize-none text-base"></textarea>
-    </div>
-
-    <div class="grid grid-cols-2 gap-4 mb-8">
-        <button onclick="quickCommand('mp3')" class="glass py-6 rounded-3xl font-medium text-lg text-white">MP3</button>
-        <button onclick="quickCommand('wav')" class="glass py-6 rounded-3xl font-medium text-lg text-white">WAV</button>
-        <button onclick="quickCommand('vid')" class="glass py-6 rounded-3xl font-medium text-lg text-white">VID</button>
-        <button onclick="quickCommand('vid+aud')" class="glass py-6 rounded-3xl font-medium text-lg text-white">VID + AUD</button>
-    </div>
-
-    <button onclick="dropInTheCrate()" 
-            class="w-full py-6 bg-gradient-to-r from-amber-400 to-orange-500 text-amber-950 rounded-3xl font-bold text-2xl shadow-2xl flex items-center justify-center gap-3 border border-white/30">
-        🪕 DROP TO CRATE
-    </button>
-
-    <button onclick="copyAShellSetup()" 
-            class="mt-4 w-full py-4 glass rounded-3xl font-medium text-sm text-white flex items-center justify-center gap-2">
-        📋 GET A-SHELL SETUP COMMAND (one-tap)
-    </button>
-
-    <div id="commandBox" class="hidden mt-8 glass rounded-3xl p-6">
-        <pre id="commandText" class="text-emerald-300 text-sm whitespace-pre-wrap"></pre>
-        <p id="aiPromptBox" class="mt-6 text-xs text-amber-300"></p>
-    </div>
-
-    <div class="mt-12 text-center text-xs text-amber-300">
-        CRATE JUICE™ Since '23
-    </div>
-</div>
-
-<script>
-    function quickCommand(type) {
-        const input = document.getElementById('urlInput').value.trim();
-        if (!input) return alert("Paste at least one URL");
-        let cmd = 'yt-dlp --concurrent-fragments 16 --retries infinite --embed-metadata --embed-thumbnail --embed-chapters ';
-        let note = '';
-        if (type === 'mp3') { cmd += '-x --audio-format mp3 --audio-quality 0 '; note = 'Professional MP3'; }
-        else if (type === 'wav') { cmd += '-x --audio-format wav '; note = 'Lossless WAV'; }
-        else if (type === 'vid') { cmd += '-f bestvideo '; note = 'Video only'; }
-        else if (type === 'vid+aud') { cmd += ''; note = 'Video + Audio'; }
-        cmd += `"${input}" --output "%(title)s.%(ext)s"`;
-        document.getElementById('commandText').textContent = cmd;
-        document.getElementById('aiPromptBox').innerHTML = `<strong>AI Batch Post-Processing Prompt (copy to any AI):</strong><br>Take these downloaded files and perform professional post-processing: ID3v2.4 tagging, frequency manipulation (EQ, compression, loudness normalization), beat matching, stem separation if needed, and any creative effects for DJ / Logic Pro use. Output tagged, ready-to-use files.`;
-        document.getElementById('commandBox').classList.remove('hidden');
-    }
-
-    function dropInTheCrate() {
-        const text = document.getElementById('commandText').textContent;
-        navigator.clipboard.writeText(text).then(() => {
-            alert("✅ Command copied!\n\nOpen A-Shell → long-press → Paste\n\nAI prompt is ready below for post-processing.");
-        });
-    }
-
-    function copyAShellSetup() {
-        const setup = `cd ~ && python3 -m pip install -U yt-dlp-apple-webkit-jsi && mkdir -p bin && cd bin && curl -L https://github.com/holzschu/a-Shell-commands/releases/download/0.1/ffmpeg.wasm -o ffmpeg.wasm && echo 'export PATH="$HOME/bin:$PATH"' >> ~/.profile && echo '✅ SETUP COMPLETE — close & reopen A-Shell completely' && hash -r`;
-        navigator.clipboard.writeText(setup).then(() => {
-            alert("✅ Full one-command A-Shell setup copied!\n\nPaste it once into A-Shell, then close & reopen the app.");
-        });
-    }
-
-    window.onload = () => {};
-</script>
+    <script>
+        // Tailwind script
+        function initializeTailwind() {
+            document.documentElement.style.setProperty('--accent', '#fb923c');
+        }
+        
+        let currentFormat = 'mp3';
+        
+        function selectFormat(format, element) {
+            // Deselect all
+            document.querySelectorAll('.format-btn').forEach(btn => {
+                btn.classList.remove('active', 'border-orange-400/70');
+                btn.classList.add('border-white/20');
+            });
+            
+            // Select current
+            element.classList.add('active', 'border-orange-400/70');
+            element.classList.remove('border-white/20');
+            
+            currentFormat = format;
+        }
+        
+        function clearAll() {
+            document.getElementById('url-input').value = '';
+            hideOutput();
+        }
+        
+        function hideOutput() {
+            document.getElementById('output-section').classList.add('hidden');
+        }
+        
+        function showOutput() {
+            document.getElementById('output-section').classList.remove('hidden');
+            document.getElementById('output-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        
+        function generateCrateCommand() {
+            const textarea = document.getElementById('url-input');
+            const urls = textarea.value.trim().split('\n')
+                .map(u => u.trim())
+                .filter(u => u.length > 0);
+            
+            if (urls.length === 0) {
+                alert("Please paste at least one URL first.");
+                return;
+            }
+            
+            // Check for Spotify
+            const hasSpotify = urls.some(u => u.toLowerCase().includes('spotify.com') || u.toLowerCase().includes('open.spotify'));
+            
+            const warningBox = document.getElementById('warning-box');
+            if (hasSpotify) {
+                warningBox.innerHTML = `
+                    <div class="flex items-start gap-x-3">
+                        <i class="fa-solid fa-exclamation-triangle text-red-400 mt-0.5"></i>
+                        <div class="text-red-200 text-sm">
+                            <strong>Spotify links detected.</strong> yt-dlp cannot bypass Spotify DRM. 
+                            Search the track title on YouTube or use a YouTube Music link instead. 
+                            Old/archived direct-hosted files work fine.
+                        </div>
+                    </div>
+                `;
+                warningBox.classList.remove('hidden');
+            } else {
+                warningBox.classList.add('hidden');
+            }
+            
+            // Build flags
+            let formatFlags = '';
+            let formatLabel = '';
+            
+            switch(currentFormat) {
+                case 'mp3':
+                    formatFlags = '-x --audio-format mp3 --audio-quality 0';
+                    formatLabel = 'MP3 (Best Quality Audio)';
+                    break;
+                case 'wav':
+                    formatFlags = '-x --audio-format wav --audio-quality 0';
+                    formatLabel = 'WAV (Lossless Audio)';
+                    break;
+                case 'vid':
+                    formatFlags = '-f "bestvideo[ext=mp4]+bestaudio[ext=m4a]/bestvideo+bestaudio/best" --merge-output-format mp4';
+                    formatLabel = 'Best Video + Audio (Merged MP4)';
+                    break;
+                case 'vidaud':
+                    formatFlags = '-f "bestvideo,bestaudio" --no-merge';
+                    formatLabel = 'Best Video + Best Audio (Separate Files)';
+                    break;
+            }
+            
+            const commonFlags = '--concurrent-fragments 16 --retries infinite --embed-metadata --embed-thumbnail --embed-chapters';
+            const outputTemplate = '--output "%(title)s.%(ext)s"';
+            
+            // Build yt-dlp command
+            const quotedUrls = urls.map(url => `'${url.replace(/'/g, "'\\''")}'`).join(' ');
+            const ytDlpCommand = `yt-dlp ${commonFlags} ${formatFlags} ${outputTemplate} ${quotedUrls}`;
+            
+            // Build one-liner wrapper script
+            const timestamp = Date.now();
+            const wrapperScript = `cat > ~/crate-grab-${timestamp}.sh << 'GRABEOF'
+#!/bin/bash
+set -e
+echo "🪕 Dropping to crate... (${formatLabel})"
+mkdir -p ~/Downloads && cd ~/Downloads
+${ytDlpCommand}
+echo "✅ Crate filled. Files saved to ~/Downloads"
+ls -lh *.mp3 *.wav *.mp4 2>/dev/null | head -20 || echo "Check ~/Downloads for your new crate."
+GRABEOF
+chmod +x ~/crate-grab-${timestamp}.sh && ~/crate-grab-${timestamp}.sh`;
+            
+            // Populate output
+            document.getElementById('command-output').textContent = ytDlpCommand;
+            document.getElementById('wrapper-output').textContent = wrapperScript;
+            
+            // Show section
+            showOutput();
+        }
+        
+        function copyToClipboard(elementId, buttonElement) {
+            const element = document.getElementById(elementId);
+            const text = element.textContent || element.innerText;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                const originalText = buttonElement.innerHTML;
+                buttonElement.innerHTML = `<i class="fa-solid fa-check"></i> <span>COPIED</span>`;
+                buttonElement.style.borderColor = '#4ade80';
+                
+                setTimeout(() => {
+                    buttonElement.innerHTML = originalText;
+                    buttonElement.style.borderColor = '';
+                }, 1800);
+            }).catch(() => {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                alert('Copied to clipboard!');
+            });
+        }
+        
+        function copySetupCommand() {
+            const setupCommand = `curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o ~/yt-dlp && chmod +x ~/yt-dlp && echo "✅ yt-dlp ready at ~/yt-dlp. Run ./yt-dlp --version to verify. For full ffmpeg support (audio conversion & embedding) you may need additional a-Shell setup or use formats that work with available tools. Update anytime with: ./yt-dlp -U"`;
+            
+            navigator.clipboard.writeText(setupCommand).then(() => {
+                const btns = document.querySelectorAll('button');
+                btns.forEach(b => {
+                    if (b.innerText.includes('A-SHELL') || b.innerText.includes('SETUP')) {
+                        const orig = b.innerHTML;
+                        b.innerHTML = `<i class="fa-solid fa-check"></i> COPIED SETUP`;
+                        setTimeout(() => { b.innerHTML = orig; }, 2200);
+                    }
+                });
+            }).catch(() => {
+                prompt("Copy this one-command A-Shell setup:", setupCommand);
+            });
+        }
+        
+        // Keyboard support
+        function setupKeyboard() {
+            const textarea = document.getElementById('url-input');
+            textarea.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
+                    e.preventDefault();
+                    generateCrateCommand();
+                }
+            });
+            
+            // Auto-select first format button on load
+            setTimeout(() => {
+                const firstBtn = document.querySelector('.format-btn');
+                if (firstBtn) {
+                    firstBtn.classList.add('active', 'border-orange-400/70');
+                    firstBtn.classList.remove('border-white/20');
+                }
+            }, 300);
+        }
+        
+        // Initialize everything
+        function init() {
+            initializeTailwind();
+            setupKeyboard();
+            
+            // Default to MP3 active
+            const mp3Btn = document.querySelector('[data-format="mp3"]');
+            if (mp3Btn) {
+                mp3Btn.classList.add('active', 'border-orange-400/70');
+                mp3Btn.classList.remove('border-white/20');
+            }
+            
+            // Easter egg: click header to show love note
+            const header = document.querySelector('.graffiti-header');
+            if (header) {
+                header.addEventListener('click', () => {
+                    const note = document.createElement('div');
+                    note.className = 'fixed bottom-6 left-1/2 -translate-x-1/2 px-6 py-3 rounded-3xl bg-black/80 text-amber-100 text-sm border border-orange-400/30 flex items-center gap-x-2 z-50';
+                    note.innerHTML = `Made with love for CHLO &amp; MIMI • CRATE JUICE™`;
+                    document.body.appendChild(note);
+                    setTimeout(() => note.remove(), 2400);
+                });
+            }
+            
+            // Show subtle hint on first load
+            setTimeout(() => {
+                const textarea = document.getElementById('url-input');
+                if (textarea && !textarea.value) {
+                    textarea.placeholder = "https://youtube.com/watch?v=... (paste multiple, one per line)\nhttps://soundcloud.com/...\nhttps://bandcamp.com/...";
+                }
+            }, 1200);
+            
+            console.log('%c[CRATE GRABBER] Production PWA initialized successfully. Ready for CHLO & MIMI.', 'color:#854d0e');
+        }
+        
+        window.onload = init;
+    </script>
 </body>
 </html>

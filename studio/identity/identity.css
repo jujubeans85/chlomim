@@ -1,0 +1,4 @@
+:root{--juice-identity:#BD7046;--juice-identity-ink:#211109}
+.juice-identity-mark{width:48px;height:48px;border-radius:14px;object-fit:contain;vertical-align:middle;flex-shrink:0}
+h1 .juice-identity-mark{margin-right:12px}
+:root{--rust:#BD7046;--glass:rgba(43,22,13,.82)}.mini-controls .format-btn,.toast{background:#BD7046;color:#fff}.sign{border-color:#BD7046}.kicker{color:#F4BB93;opacity:1}

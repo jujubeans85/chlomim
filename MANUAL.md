@@ -1,44 +1,14 @@
-# THE STUDIO - CRATE JUICE™ Evolving Manual
+# Cans / chlomim
 
-## Core Features (Current)
-- Vintage analog gear aesthetic with handwritten tape-deck buttons
-- Txt Box: Paste YouTube URL(s) (one per line)
-- Format selectors: MP3, WAV (default with ✓), VID ONLY, VID + AUD
-- DROP TO CRATE → Generates professional yt-dlp bash script for A-Shell
-- A-SHELL COMMAND panel with COPY button
-- UPLOAD SHAZAM CSV → parses CSV and generates batch download scripts
+Open https://jujubeans85.github.io/chlomim/studio/ . The root also forwards here.
 
-## A-Shell Usage
-1. Copy script from A-SHELL panel
-2. In A-Shell: `cat > download.sh` → paste → Ctrl+D
-3. `chmod +x download.sh`
-4. `./download.sh`
-5. Files saved to `~/Documents/` for easy Logic/DJ import
+1. Paste one or more full HTTP(S) links, one per line, or import a CSV containing links.
+2. Choose MP3, WAV, VIDEO or VID + AUD. Whole playlists are opt-in.
+3. Copy the generated command into a-Shell after its prompt. The page does not run it.
+4. Files are written beneath `$HOME/Documents/CRATE/<format>/`, shown in the Files app under a-Shell. Existing files are not overwritten. Conversion needs yt-dlp and ffmpeg in the execution environment.
 
-## Plugins (located in /plugins/)
-- custom_plugin.py and shazam_search.py
-- Copy to `~/.config/yt-dlp/plugins/` in A-Shell
-- Automatically used by generated scripts
+VID + AUD downloads merged video/audio with metadata and a thumbnail; it does not split stems. The separate Audio prompt builder preserves Sundayjuice's descriptive controls; it produces editable text, not processed audio. OCR is not implemented. For a screenshot, use iOS Live Text and paste the links.
 
-## Shazam Workflow
-- Export from Shazam app
-- Upload CSV in THE STUDIO
-- Get instant batch yt-dlp script using ytsearch:"Artist - Title"
+Command generation and shell argument isolation have automated coverage. Actual downloads, ffmpeg availability, clipboard access and installed iOS behavior still need a physical device check. Keep functional URL query parameters; do not truncate everything after `?`.
 
-## iOS Shortcuts for Auto CSV
-[Full JSON example will be in the PRO TOOLS panel]
-
-## Launchpad Mini MK2 + Logic Pro Mapping (for stems)
-- After Logic AI Stem Splitter:
-  - Track 1-4: 16 pads each (4 stems x 4 tracks)
-  - Color coding: Red=Vox, Orange=Drums, Yellow=Bass, Green=Other
-  - Use Novation Components to save template
-
-## Pro Tools Panel (in app)
-- Stem separation (Logic AI)
-- Spectral / frequency / harmonic manipulation
-- Groove extraction & application
-
-Keep this file updated with every iteration.
-
-Last updated: May 25 2026
+The canonical code is `studio/main.js` plus `studio/command-builder.js`. `studio/script.js`, plugins and grabber are historical experiments, not dependencies of this app. Carriage artwork and app identity are retained. Cache cleanup is scoped to this app and installation path. Add to Home Screen through Safari Share after loading the studio URL.

@@ -269,3 +269,12 @@ textarea::placeholder {
     margin-top:-2vh;
   }
 }
+
+/* Foundation v1: larger touch targets, focus and reduced motion; preserve the carriage identity. */
+:root { --juice-touch:48px; --juice-focus:#ffe4c6; }
+button, input[type=file] { min-height:var(--juice-touch); }
+button:disabled { opacity:.5; }
+:focus-visible { outline:3px solid var(--juice-focus); outline-offset:4px; }
+a { color:#ffcb9f; }
+input[type=checkbox] { width:24px; height:24px; vertical-align:middle; }
+@media (prefers-reduced-motion:reduce) { *, *::before, *::after { scroll-behavior:auto!important; transition:none!important; animation:none!important; } }

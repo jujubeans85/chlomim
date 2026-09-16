@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
 <meta name="apple-mobile-web-app-capable" content="yes">
 
@@ -38,11 +38,13 @@
 
   <section class="sign sign-mid launcher-card" aria-label="Drop link here">
     <span class="kicker">STEP 1 + 2 + 3</span>
-    <h2>DROP LINK HERE</h2>
+    <h2>DROP LINKS HERE</h2>
     <p>Paste. Clean. Pick format. Copy command.</p>
 
-    <textarea id="source-url" placeholder="paste source link here"></textarea>
+    <textarea aria-label="Source links, one per line" id="source-url" placeholder="paste links here, one per line"></textarea>
 
+    <label class="helper-note">Import CSV <input id="csv-input" type="file" accept=".csv,text/csv"></label>
+    <label class="helper-note"><input id="playlist-mode" type="checkbox"> Include whole playlists</label>
     <div class="mini-controls" role="group" aria-label="link and format controls">
       <button id="clean-link" class="copy-btn" type="button">CLEAN LINK</button>
       <button class="format-btn active" data-format="MP3" type="button">MP3</button>
@@ -69,24 +71,26 @@
     <code id="generated-command">Paste a clean link first.</code>
 
     <b>Find file</b>
-    <code>Files app → On My iPad → A-Shell → CRATE → MP3</code>
+    <code id="file-path">Files → On My iPhone / iPad → a-Shell → CRATE → MP3</code>
 
     <b>Check in A-Shell</b>
     <code>ls -lh "$HOME/Documents/CRATE/MP3"</code>
 
     <b>Troubleshooting</b>
-    <code>If URL fails, remove everything after ?
+    <code>If a URL fails, check the complete original link; keep video and playlist IDs.
 If file is missing, check On My iPad / A-Shell / CRATE / MP3
 If yt-dlp is missing, run: pip install --upgrade yt-dlp
 If shell gets weird, cancel and return to prompt before pasting again</code>
 
     <p class="legal-note">Personal/permitted media only. No in-browser downloader. This page only copies a command you run yourself.</p>
   </aside>
+<p><a href="prompt.html">Audio processing prompt builder</a></p>
 </main>
 
 <footer>FOR CHLOBO N MIMI · PERSONAL LAB · JUICE PLUR</footer>
-<div class="toast" id="toast">ready</div>
+<div role="status" class="toast" id="toast">ready</div>
 
+<script src="command-builder.js"></script>
 <script src="main.js"></script>
 </body>
 </html>

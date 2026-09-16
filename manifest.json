@@ -1,14 +1,24 @@
 {
-  "name": "CHLOMIM • CRATE JUICE™️",
-  "short_name": "CHLOMIM",
-  "description": "iOS yt-dlp A-Shell helper with batch, advanced formats, CRATE JUICE™️ style",
-  "start_url": ".",
+  "name": "Cans",
+  "short_name": "Cans",
+  "start_url": "./studio/",
+  "scope": "./studio/",
   "display": "standalone",
-  "background_color": "#09090b",
-  "theme_color": "#f59e0b",
+  "theme_color": "#BD7046",
+  "background_color": "#BD7046",
   "icons": [
-    {"src": "icons/clo-icon.svg", "sizes": "192x192", "type": "image/svg+xml"},
-    {"src": "icons/mimi-icon.svg", "sizes": "512x512", "type": "image/svg+xml"},
-    {"src": "icons/cj-icon.svg", "sizes": "512x512", "type": "image/svg+xml"}
-  ]
+    {
+      "src": "studio/identity/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "studio/identity/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "id": "./studio/"
 }

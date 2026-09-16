@@ -20,86 +20,18 @@ function showToast(message) {
   }, 1800);
 }
 
-function stripOuterQuotes(value) {
-  return String(value || '')
-    .trim()
-    .replace(/[“”]/g, '"')
-    .replace(/[‘’]/g, "'")
-    .replace(/^['"]+|['"]+$/g, '');
-}
-
-function cleanUrl(value) {
-  const input = stripOuterQuotes(value);
-
-  if (!input) return '';
-
-  try {
-    const parsed = new URL(input);
-    const host = parsed.hostname.replace(/^www\./, '');
-
-    if (host === 'youtu.be') {
-      parsed.search = '';
-      parsed.hash = '';
-      return parsed.toString();
-    }
-
-    const removable = [
-      'si',
-      'utm_source',
-      'utm_medium',
-      'utm_campaign',
-      'utm_term',
-      'utm_content',
-      'feature',
-      'fbclid',
-      'igsh',
-      'igshid'
-    ];
-
-    removable.forEach(key => parsed.searchParams.delete(key));
-    parsed.hash = '';
-
-    return parsed.toString();
-  } catch {
-    return input.split('?')[0];
-  }
-}
-
-function shellQuote(value) {
-  const safe = String(value || 'CLEAN_URL_HERE')
-    .replace(/\\/g, '\\\\')
-    .replace(/"/g, '\\"')
-    .replace(/\$/g, '\\$')
-    .replace(/`/g, '\\`');
-
-  return `"${safe}"`;
-}
-
 function buildCommand() {
-  const cleanSource = cleanUrl(sourceInput?.value || '') || 'CLEAN_URL_HERE';
-  const quotedUrl = shellQuote(cleanSource);
-
-  const commands = {
-    MP3:
-      `yt-dlp -x --audio-format mp3 --audio-quality 0 -o "$HOME/Documents/CRATE/MP3/%(title)s.%(ext)s" ${quotedUrl}`,
-
-    WAV:
-      `yt-dlp -x --audio-format wav -o "$HOME/Documents/CRATE/WAV/%(title)s.%(ext)s" ${quotedUrl}`,
-
-    VIDEO:
-      `yt-dlp -f "bv*+ba/b" --merge-output-format mp4 -o "$HOME/Documents/CRATE/VIDEO/%(title)s.%(ext)s" ${quotedUrl}`,
-
-    VIDAUD:
-      `yt-dlp -f "bv*+ba/b" --write-thumbnail --embed-metadata --merge-output-format mp4 -o "$HOME/Documents/CRATE/VIDEO/%(title)s.%(ext)s" ${quotedUrl}`
-  };
-
-  const command = commands[selectedFormat] || commands.MP3;
-
-  if (generatedCommand) {
+  try {
+    const command = CansCommands.build(sourceInput.value, selectedFormat, document.getElementById('playlist-mode').checked);
     generatedCommand.textContent = command;
+    copyCommand.disabled = false;
+    document.getElementById('file-path').textContent = 'Files → On My iPhone / iPad → a-Shell → CRATE → ' + (selectedFormat === 'VIDAUD' ? 'VIDEO' : selectedFormat);
+    return command;
+  } catch (error) {
+    generatedCommand.textContent = error.message;
+    copyCommand.disabled = true;
+    return '';
   }
-
-  return command;
 }
 
 function handleAction(action) {
@@ -149,7 +81,9 @@ function bootChlomimCommandHelper() {
   cleanLinkButton?.addEventListener('click', () => {
     if (!sourceInput) return;
 
-    const cleaned = cleanUrl(sourceInput.value);
+    let cleaned;
+    try { cleaned = CansCommands.urls(sourceInput.value).join('\n'); }
+    catch (error) { showToast(error.message); return; }
 
     if (!cleaned) {
       showToast('paste link first');
@@ -163,7 +97,7 @@ function bootChlomimCommandHelper() {
 
   copyCommand?.addEventListener('click', async () => {
     const command = buildCommand();
-
+    if (!command) return;
     try {
       await navigator.clipboard.writeText(command);
       showToast('command copied');
@@ -178,6 +112,19 @@ function bootChlomimCommandHelper() {
     });
   }
 
+  document.getElementById('playlist-mode').addEventListener('change', buildCommand);
+  document.getElementById('csv-input').addEventListener('change', async event => {
+    const file = event.target.files[0];
+    if (!file) return;
+    try {
+      if (file.size > 2000000) throw new Error('Use a CSV smaller than 2 MB.');
+      const found = CansCommands.csv(await file.text());
+      const combined = [sourceInput.value.trim(), ...found].filter(Boolean).join('\n');
+      sourceInput.value = CansCommands.urls(combined).join('\n');
+      buildCommand(); showToast('CSV links added');
+    } catch (error) { showToast(error.message); }
+    finally { event.target.value = ''; }
+  });
   buildCommand();
   showToast('PLUR online');
 }

@@ -1,4 +1,4 @@
-import {controls,defaults,modes,presets,normalizeRecipe,generatePrompt,parseExport,SCHEMA,VERSION,layerTypes,placements,newLayer} from './recipe-v3.mjs';
+import {controls,defaults,modes,presets,normalizeRecipe,generatePrompt,parseExport,SCHEMA,VERSION,layerTypes,placements,newLayer} from './recipe-v3.mjs?v=20261010-presets';
 const $=id=>document.getElementById(id), KEY='juice-cans.audio-recipes.v3', OLD_KEY='juice-cans.audio-recipes.v2';
 let recipe={...defaults}, saved=[], dirty=false, storageHealthy=true;
 const notify=text=>{$('status').textContent=text;};

@@ -16,7 +16,7 @@ New presets: **Triplet Accents** (hats and rim; source fixed) and **Space Betwee
 
 ## Schema and persistence
 
-`studio/recipe-v3.mjs` owns schema v3, validation, presets and prompt generation. `prompt-v3.js` uses `juice-cans.audio-recipes.v3` localStorage. If this key is absent, it reads and migrates v2 recipes in memory. The first explicit save writes v3; v2 storage is never overwritten. Both v2 and v3 JSON imports work. Future versions are rejected. Malformed or inaccessible storage is preserved and writes are blocked; JSON export remains available.
+`studio/recipe-v3.mjs` owns schema v3, validation, presets and prompt generation. `prompt-v3.1.js` uses `juice-cans.audio-recipes.v3` localStorage. If this key is absent, it reads and migrates v2 recipes in memory. The first explicit save writes v3; v2 storage is never overwritten. Both v2 and v3 JSON imports work. Future versions are rejected. Malformed or inaccessible storage is preserved and writes are blocked; JSON export remains available.
 
 Recipes add `timingScope`, `beatMode`, `bpm`, `accentPattern`, `cycle`, `seed`, `velocity`, `attack`, `sustain`, `layerExports` and `layers`. Each layer holds `type`, `level` (−36 to −3 dB), `density` (5–75%), `placement` and `pan` (−50 to +50%). These are instructions for an external processor, not measured or rendered results. The level is a starting point relative to source integrated loudness measured over the same excerpt; the processor must handle near-silent layers and audition the result. Density is a target, not a quota.
 

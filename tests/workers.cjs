@@ -1,8 +1,8 @@
 const assert=require('node:assert/strict'),vm=require('node:vm'),fs=require('node:fs');
 async function check(file,scope,own,foreign){
  const handlers={},deleted=[],lookups=[];let pending,skipped=false,claimed=false;
- const cache={addAll:async()=>{},match:async request=>{lookups.push(request);return undefined}};
- const ctx={URL,Promise,self:{skipWaiting:async()=>{skipped=true},clients:{claim:async()=>{claimed=true}},registration:{scope,unregister:async()=>true},addEventListener:(t,f)=>handlers[t]=f},
+ const cache={addAll:async requests=>{assert(requests.length>0);assert(requests.every(r=>r.cache==='reload' && r.url.startsWith(scope)),'Precache must fetch fresh assets within this app')},match:async request=>{lookups.push(request);return undefined}};
+ const ctx={URL,Request,Promise,self:{skipWaiting:async()=>{skipped=true},clients:{claim:async()=>{claimed=true}},registration:{scope,unregister:async()=>true},addEventListener:(t,f)=>handlers[t]=f},
  caches:{open:async()=>cache,keys:async()=>[own,foreign,'font-juice-v1'],delete:async k=>deleted.push(k)},fetch:async()=>({ok:true})};
  vm.runInNewContext(fs.readFileSync(file,'utf8'),ctx);
  handlers.install({waitUntil:p=>pending=p});await pending;

@@ -1,6 +1,7 @@
-/* Cans command builder v1. No downloads or shell execution in the browser. */
+/* Cans batch command builder. Media downloads run in a-Shell, not the browser. */
 (function (root) {
   'use strict';
+  const MAX_URLS = 200;
   function cleanUrl(value) {
     const raw = String(value || '').trim();
     if (!raw || /[\x00-\x20\x7f]/.test(raw)) throw new Error('Use a complete web link, without spaces.');
@@ -15,13 +16,26 @@
     return url.href;
   }
   function quote(value) { return "'" + String(value).replace(/'/g, "'\"'\"'") + "'"; }
+  function inspect(text) {
+    const result = { urls: [], errors: [], count: 0, duplicates: 0 };
+    const seen = new Set();
+    String(text).split(/\r?\n/).forEach((line, index) => {
+      if (!line.trim()) return;
+      result.count++;
+      try {
+        const cleaned = cleanUrl(line);
+        if (seen.has(cleaned)) result.duplicates++;
+        else { seen.add(cleaned); result.urls.push(cleaned); }
+      } catch (error) { result.errors.push(`Line ${index + 1}: ${error.message}`); }
+    });
+    if (result.count > MAX_URLS) result.errors.unshift(`Use up to ${MAX_URLS} links per batch (${result.count} pasted). Split this list into smaller batches.`);
+    return result;
+  }
   function urls(text) {
-    const lines = String(text).split(/\r?\n/).map(s => s.trim()).filter(Boolean);
-    if (!lines.length) throw new Error('Paste at least one link.');
-    if (lines.length > 200) throw new Error('Use up to 200 links per batch.');
-    return [...new Set(lines.map((line, i) => {
-      try { return cleanUrl(line); } catch (e) { throw new Error(`Line ${i + 1}: ${e.message}`); }
-    }))];
+    const result = inspect(text);
+    if (!result.count) throw new Error('Paste at least one link.');
+    if (result.errors.length) throw new Error(result.errors.join('\n'));
+    return result.urls;
   }
   function build(text, format = 'MP3', playlist = false) {
     const options = {
@@ -32,7 +46,11 @@
     };
     if (!Object.hasOwn(options, format)) throw new Error('Choose a supported format.');
     const folder = format === 'VIDAUD' ? 'VIDEO' : format;
-    return `yt-dlp --retries 3 --fragment-retries 3 --no-overwrites ${playlist ? '--yes-playlist' : '--no-playlist'} ${options[format]} -o "$HOME/Documents/CRATE/${folder}/%(title)s [%(id)s].%(ext)s" -- ${urls(text).map(quote).join(' ')}`;
+    return `yt-dlp --no-abort-on-error --continue --retries 3 --fragment-retries 3 --no-overwrites ${playlist ? '--yes-playlist' : '--no-playlist'} ${options[format]} -o "$HOME/Documents/CRATE/${folder}/%(title)s [%(id)s].%(ext)s" -- ${urls(text).map(quote).join(' ')}`;
+  }
+  function script(text, format = 'MP3', playlist = false) {
+    const command = build(text, format, playlist);
+    return `#!/bin/sh\n# Cans: ${urls(text).length} URLs, ${format}. Run in a-Shell with yt-dlp and ffmpeg installed.\n# Downloads continue past unavailable items; review any errors in a-Shell.\n# Existing files are not overwritten.\n${command}\n`;
   }
   function csv(text) {
     if (text.length > 2000000) throw new Error('Use a CSV smaller than 2 MB.');
@@ -51,7 +69,8 @@
     if (!found.length) throw new Error('No web links found in the CSV.');
     return urls(found.join('\n'));
   }
-  const api = { cleanUrl, quote, urls, build, csv };
+  const api = { MAX_URLS, cleanUrl, quote, inspect, urls, build, script, csv };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.CansCommands = api;
 })(globalThis);
+

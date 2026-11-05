@@ -4,6 +4,10 @@ const sourceInput = document.getElementById('source-url');
 const generatedCommand = document.getElementById('generated-command');
 const copyCommand = document.getElementById('copy-command');
 const cleanLinkButton = document.getElementById('clean-link');
+const saveScriptButton = document.getElementById('save-script');
+const saveLinksButton = document.getElementById('save-links');
+const batchStatus = document.getElementById('batch-status');
+const batchErrors = document.getElementById('batch-errors');
 
 let selectedFormat = 'MP3';
 
@@ -21,17 +25,43 @@ function showToast(message) {
 }
 
 function buildCommand() {
+  const batch = CansCommands.inspect(sourceInput.value);
+  const ready = batch.count > 0 && batch.errors.length === 0;
+  batchStatus.textContent = `${batch.count} / ${CansCommands.MAX_URLS} links · ${batch.urls.length} unique` +
+    (batch.duplicates ? ` · ${batch.duplicates} duplicate${batch.duplicates === 1 ? '' : 's'}` : '') +
+    (batch.errors.length ? ' · fix the entries below' : ready ? ' · ready' : ' · paste your batch');
+  batchErrors.textContent = batch.errors.join('\n');
+  batchErrors.hidden = !batch.errors.length;
+  sourceInput.setAttribute('aria-invalid', String(batch.errors.length > 0));
+  [copyCommand, cleanLinkButton, saveScriptButton, saveLinksButton].forEach(button => { button.disabled = !ready; });
+  const folder = selectedFormat === 'VIDAUD' ? 'VIDEO' : selectedFormat;
+  document.getElementById('file-path').textContent = 'Files → On My iPhone / iPad → a-Shell → CRATE → ' + folder;
+  document.getElementById('folder-label').textContent = 'On My iPad / A-Shell / CRATE / ' + folder;
+  document.getElementById('check-command').textContent = `ls -lh "$HOME/Documents/CRATE/${folder}"`;
+  document.getElementById('script-run').textContent = 'sh ' + scriptFilename();
   try {
     const command = CansCommands.build(sourceInput.value, selectedFormat, document.getElementById('playlist-mode').checked);
     generatedCommand.textContent = command;
-    copyCommand.disabled = false;
-    document.getElementById('file-path').textContent = 'Files → On My iPhone / iPad → a-Shell → CRATE → ' + (selectedFormat === 'VIDAUD' ? 'VIDEO' : selectedFormat);
     return command;
   } catch (error) {
     generatedCommand.textContent = error.message;
     copyCommand.disabled = true;
     return '';
   }
+}
+
+function scriptFilename() { return `cans-batch-${selectedFormat.toLowerCase()}.sh`; }
+
+function saveTextFile(filename, text, type) {
+  const url = URL.createObjectURL(new Blob([text], { type }));
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  // Leave time for Safari to consume the object URL before releasing it.
+  setTimeout(() => URL.revokeObjectURL(url), 60000);
 }
 
 function handleAction(action) {
@@ -68,9 +98,11 @@ function bootChlomimCommandHelper() {
 
       document.querySelectorAll('.format-btn').forEach(btn => {
         btn.classList.remove('active');
+        btn.setAttribute('aria-pressed', 'false');
       });
 
       button.classList.add('active');
+      button.setAttribute('aria-pressed', 'true');
       buildCommand();
       showToast(`${button.textContent.trim()} selected`);
     });
@@ -82,6 +114,7 @@ function bootChlomimCommandHelper() {
     if (!sourceInput) return;
 
     let cleaned;
+    const batch = CansCommands.inspect(sourceInput.value);
     try { cleaned = CansCommands.urls(sourceInput.value).join('\n'); }
     catch (error) { showToast(error.message); return; }
 
@@ -92,7 +125,7 @@ function bootChlomimCommandHelper() {
 
     sourceInput.value = cleaned;
     buildCommand();
-    showToast('link cleaned');
+    showToast(`${batch.urls.length} links cleaned` + (batch.duplicates ? ` · ${batch.duplicates} duplicate${batch.duplicates === 1 ? '' : 's'} removed` : ''));
   });
 
   copyCommand?.addEventListener('click', async () => {
@@ -100,10 +133,26 @@ function bootChlomimCommandHelper() {
     if (!command) return;
     try {
       await navigator.clipboard.writeText(command);
-      showToast('command copied');
+      showToast('Batch copied — paste in a-Shell, then Return');
     } catch {
       showToast('copy failed — select command manually');
     }
+  });
+
+  saveScriptButton.addEventListener('click', () => {
+    if (!buildCommand()) return;
+    try {
+      saveTextFile(scriptFilename(), CansCommands.script(sourceInput.value, selectedFormat, document.getElementById('playlist-mode').checked), 'text/plain;charset=utf-8');
+      showToast('Script ready — save to a-Shell, then run it');
+    } catch (error) { showToast('Could not save script: ' + error.message); }
+  });
+
+  saveLinksButton.addEventListener('click', () => {
+    if (!buildCommand()) return;
+    try {
+      saveTextFile('cans-clean-links.txt', CansCommands.urls(sourceInput.value).join('\n') + '\n', 'text/plain;charset=utf-8');
+      showToast('Clean link list ready to save');
+    } catch (error) { showToast('Could not save links: ' + error.message); }
   });
 
   if ('serviceWorker' in navigator) {
@@ -130,3 +179,4 @@ function bootChlomimCommandHelper() {
 }
 
 window.addEventListener('load', bootChlomimCommandHelper);
+

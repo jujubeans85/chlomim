@@ -33,34 +33,46 @@
   <section class="sign sign-top" data-action="portal" tabindex="0" role="button" aria-label="Open CHLOMIM command helper">
     <span class="kicker">CHLOMIM</span>
     <h1><img class="juice-identity-mark" src="identity/icon.svg" alt="" width="48" height="48">CRATE JUICE CANS</h1>
-    <p>clean link → a-shell → mp3 → 🎧</p>
+    <p>batch clean → a-shell → downloads → 🎧</p>
   </section>
 
   <section class="sign sign-mid launcher-card" aria-label="Drop link here">
     <span class="kicker">STEP 1 + 2 + 3</span>
-    <h2>DROP LINKS HERE</h2>
-    <p>Paste. Clean. Pick format. Copy command.</p>
+    <h2>DROP YOUR BATCH</h2>
+    <p>30 links? Easy. Up to 200 at once.</p>
 
-    <textarea aria-label="Source links, one per line" id="source-url" placeholder="paste links here, one per line"></textarea>
+    <label for="source-url" class="helper-note input-label">Paste full URLs, one per line</label>
+    <textarea aria-describedby="batch-status batch-errors" id="source-url" rows="8" spellcheck="false" autocapitalize="off" autocorrect="off" placeholder="https://…&#10;https://…&#10;Paste up to 200 links here"></textarea>
+    <p id="batch-status" class="helper-note batch-status" role="status">0 / 200 links · ready for your batch</p>
+    <pre id="batch-errors" class="batch-errors" hidden></pre>
 
     <label class="helper-note">Import CSV <input id="csv-input" type="file" accept=".csv,text/csv"></label>
     <label class="helper-note"><input id="playlist-mode" type="checkbox"> Include whole playlists</label>
-    <div class="mini-controls" role="group" aria-label="link and format controls">
-      <button id="clean-link" class="copy-btn" type="button">CLEAN LINK</button>
-      <button class="format-btn active" data-format="MP3" type="button">MP3</button>
-      <button class="format-btn" data-format="WAV" type="button">WAV</button>
-      <button class="format-btn" data-format="VIDEO" type="button">VIDEO</button>
-      <button class="format-btn" data-format="VIDAUD" type="button">VID + AUD</button>
-      <button id="copy-command" class="copy-btn" type="button">COPY COMMAND</button>
+    <div class="mini-controls" role="group" aria-label="batch link controls">
+      <button id="clean-link" class="copy-btn" type="button" disabled>BATCH CLEAN</button>
+      <button id="save-links" class="copy-btn" type="button" disabled>SAVE CLEAN LINKS (.txt)</button>
+    </div>
+    <p class="helper-note">Cleans tracking tags and removes duplicate links. Keeps video IDs, playlists and timestamps.</p>
+    <div class="mini-controls" role="group" aria-label="download format">
+      <button class="format-btn active" data-format="MP3" aria-pressed="true" type="button">MP3</button>
+      <button class="format-btn" data-format="WAV" aria-pressed="false" type="button">WAV</button>
+      <button class="format-btn" data-format="VIDEO" aria-pressed="false" type="button">VIDEO</button>
+      <button class="format-btn" data-format="VIDAUD" aria-pressed="false" type="button">VID + AUD</button>
+    </div>
+    <div class="mini-controls batch-actions" role="group" aria-label="batch download controls">
+      <button id="copy-command" class="copy-btn" type="button" disabled>COPY BATCH DOWNLOAD</button>
+      <button id="save-script" class="copy-btn" type="button" disabled>SAVE BATCH SCRIPT (.sh)</button>
     </div>
 
-    <p class="helper-note">Copy this after the A-Shell prompt. Do not include <b>[~/Documents]$</b>.</p>
+    <p class="helper-note">Tap <b>COPY BATCH DOWNLOAD</b>, open a-Shell, paste and press Return. One command downloads the whole batch in your chosen format. Failed downloads do not stop the remaining queue.</p>
+    <p class="helper-note" id="script-help">Or save the script into a-Shell’s Documents folder and run <code id="script-run">sh cans-batch-mp3.sh</code>.</p>
+    <p class="helper-note">This page prepares the batch; media downloads run in a-Shell with yt-dlp and ffmpeg installed.</p>
   </section>
 
   <section class="sign sign-low" data-action="shell" tabindex="0" role="button" aria-label="Reveal A-Shell path">
     <span class="kicker">STEP 4</span>
     <h2>A-SHELL PATH</h2>
-    <p>On My iPad / A-Shell / CRATE / MP3</p>
+    <p id="folder-label">On My iPad / A-Shell / CRATE / MP3</p>
   </section>
 
   <aside class="shell-panel show" id="shell-panel" aria-live="polite">
@@ -74,15 +86,15 @@
     <code id="file-path">Files → On My iPhone / iPad → a-Shell → CRATE → MP3</code>
 
     <b>Check in A-Shell</b>
-    <code>ls -lh "$HOME/Documents/CRATE/MP3"</code>
+    <code id="check-command">ls -lh "$HOME/Documents/CRATE/MP3"</code>
 
     <b>Troubleshooting</b>
     <code>If a URL fails, check the complete original link; keep video and playlist IDs.
-If file is missing, check On My iPad / A-Shell / CRATE / MP3
+If a file is missing, check the selected CRATE folder and a-Shell’s errors.
 If yt-dlp is missing, run: pip install --upgrade yt-dlp
 If shell gets weird, cancel and return to prompt before pasting again</code>
 
-    <p class="legal-note">Personal/permitted media only. No in-browser downloader. This page only copies a command you run yourself.</p>
+    <p class="legal-note">Personal/permitted media only. Commands and scripts run only when you start them in a-Shell.</p>
   </aside>
 <p><a href="prompt.html">Audio processing prompt builder</a></p>
 </main>
@@ -94,4 +106,5 @@ If shell gets weird, cancel and return to prompt before pasting again</code>
 <script src="main.js"></script>
 </body>
 </html>
+
 

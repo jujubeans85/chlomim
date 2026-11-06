@@ -9,10 +9,14 @@
     try { url = new URL(raw); } catch { throw new Error('Use a complete https:// or http:// link.'); }
     if (!['https:', 'http:'].includes(url.protocol) || url.username || url.password)
       throw new Error('Use a public HTTP or HTTPS link without a login.');
-    // Keep functional query parameters (video IDs, playlists, signatures and timestamps).
-    for (const key of [...url.searchParams.keys()]) {
-      if (/^utm_/i.test(key) || ['si', 'fbclid', 'igsh', 'igshid'].includes(key)) url.searchParams.delete(key);
-    }
+    // Filter raw fields: URLSearchParams.delete re-encodes unrelated values,
+    // which can invalidate signed links (%20 becomes +, ~ becomes %7E, etc.).
+    const fields = url.search.slice(1).split('&');
+    const kept = fields.filter(field => {
+      const key = new URLSearchParams(field).keys().next().value || '';
+      return !(/^utm_/i.test(key) || ['si', 'fbclid', 'igsh', 'igshid'].includes(key));
+    });
+    if (kept.length !== fields.length) url.search = kept.length ? '?' + kept.join('&') : '';
     return url.href;
   }
   function quote(value) { return "'" + String(value).replace(/'/g, "'\"'\"'") + "'"; }
